@@ -1,0 +1,37 @@
+{
+  "name": "bomprobe",
+  "version": "0.1.0",
+  "description": "SBOM quality auditor for CycloneDX and SPDX",
+  "main": "src/index.js",
+  "bin": {
+    "bomprobe": "bin/bomprobe.js"
+  },
+  "scripts": {
+    "test": "node --test test/**/*.test.js"
+  },
+  "keywords": [
+    "sbom",
+    "cyclonedx",
+    "spdx",
+    "bom",
+    "software-bill-of-materials",
+    "supply-chain",
+    "security",
+    "audit",
+    "ntia",
+    "compliance"
+  ],
+  "author": "Aditya Kumar Singh",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aks-builds/bomprobe.git"
+  },
+  "bugs": {
+    "url": "https://github.com/aks-builds/bomprobe/issues"
+  },
+  "homepage": "https://github.com/aks-builds/bomprobe#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
