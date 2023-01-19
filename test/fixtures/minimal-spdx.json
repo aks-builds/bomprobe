@@ -1,0 +1,52 @@
+{
+  "spdxVersion": "SPDX-2.3",
+  "dataLicense": "CC0-1.0",
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "name": "test-sbom",
+  "creationInfo": {
+    "created": "2023-01-15T10:00:00Z",
+    "creators": [
+      "Tool: syft-0.60.0",
+      "Organization: Test Org"
+    ]
+  },
+  "packages": [
+    {
+      "SPDXID": "SPDXRef-DOCUMENT",
+      "name": "test-sbom",
+      "versionInfo": "1.0.0",
+      "licenseDeclared": "NOASSERTION"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-express",
+      "name": "express",
+      "versionInfo": "4.18.2",
+      "supplier": "expressjs",
+      "licenseDeclared": "MIT",
+      "description": "Fast web framework",
+      "checksums": [
+        { "algorithm": "SHA256", "checksumValue": "abc123" }
+      ],
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/express@4.18.2"
+        }
+      ]
+    },
+    {
+      "SPDXID": "SPDXRef-Package-lodash",
+      "name": "lodash",
+      "versionInfo": "4.17.21",
+      "licenseDeclared": "NOASSERTION"
+    }
+  ],
+  "relationships": [
+    {
+      "spdxElementId": "SPDXRef-Package-express",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package-lodash"
+    }
+  ]
+}
