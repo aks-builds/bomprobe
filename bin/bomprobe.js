@@ -3,6 +3,7 @@
 const { audit } = require('../src');
 const textFormatter = require('../src/formatters/text');
 const jsonFormatter = require('../src/formatters/json');
+const markdownFormatter = require('../src/formatters/markdown');
 
 const args = process.argv.slice(2);
 
@@ -12,6 +13,7 @@ if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
   console.log('Options:');
   console.log('  --profile ntia   Check NTIA minimum elements compliance');
   console.log('  --json           Output as JSON');
+  console.log('  --markdown       Output as Markdown');
   console.log('  --list-checks    List available checks');
   console.log('  --help, -h       Show this help');
   console.log('  --version, -v    Show version');
@@ -46,6 +48,7 @@ if (profileIdx !== -1 && args[profileIdx + 1]) {
 }
 
 const useJson = args.includes('--json');
+const useMarkdown = args.includes('--markdown');
 
 const result = audit(file, options);
 
@@ -54,7 +57,9 @@ if (result.error) {
   process.exit(1);
 }
 
-const formatter = useJson ? jsonFormatter : textFormatter;
+let formatter = textFormatter;
+if (useJson) formatter = jsonFormatter;
+if (useMarkdown) formatter = markdownFormatter;
 console.log(formatter.formatResult(result));
 
 const hasErrors = result.checks.some(c =>
