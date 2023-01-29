@@ -8,7 +8,9 @@ const checks = [
   require('./metadata-author'),
   require('./metadata-timestamp'),
   require('./metadata-tools'),
-  require('./dependency-coverage')
+  require('./dependency-coverage'),
+  require('./component-description'),
+  require('./component-cpe')
 ];
 
 function runAll(sbom) {
