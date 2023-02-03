@@ -10,7 +10,9 @@ const checks = [
   require('./metadata-tools'),
   require('./dependency-coverage'),
   require('./component-description'),
-  require('./component-cpe')
+  require('./component-cpe'),
+  require('./component-type'),
+  require('./spec-version')
 ];
 
 function runAll(sbom) {
