@@ -1,0 +1,69 @@
+{
+  "spdxVersion": "SPDX-2.3",
+  "dataLicense": "CC0-1.0",
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "name": "perfect-sbom",
+  "creationInfo": {
+    "created": "2023-01-15T10:00:00Z",
+    "creators": [
+      "Organization: Acme Corp",
+      "Tool: syft-0.70.0"
+    ]
+  },
+  "packages": [
+    {
+      "SPDXID": "SPDXRef-DOCUMENT",
+      "name": "perfect-sbom",
+      "versionInfo": "1.0.0",
+      "licenseDeclared": "MIT"
+    },
+    {
+      "SPDXID": "SPDXRef-express",
+      "name": "express",
+      "versionInfo": "4.18.2",
+      "supplier": "Organization: OpenJS Foundation",
+      "licenseDeclared": "MIT",
+      "description": "Fast web framework for Node.js",
+      "checksums": [
+        { "algorithm": "SHA256", "checksumValue": "abc123" }
+      ],
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/express@4.18.2"
+        }
+      ]
+    },
+    {
+      "SPDXID": "SPDXRef-lodash",
+      "name": "lodash",
+      "versionInfo": "4.17.21",
+      "supplier": "Organization: Lodash",
+      "licenseDeclared": "MIT",
+      "description": "Utility library",
+      "checksums": [
+        { "algorithm": "SHA256", "checksumValue": "def456" }
+      ],
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/lodash@4.17.21"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "spdxElementId": "SPDXRef-express",
+      "relatedSpdxElement": "SPDXRef-lodash",
+      "relationshipType": "DEPENDS_ON"
+    },
+    {
+      "spdxElementId": "SPDXRef-lodash",
+      "relatedSpdxElement": "SPDXRef-express",
+      "relationshipType": "DEPENDS_ON"
+    }
+  ]
+}
