@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const { audit } = require('../src');
+const { getFormatter } = require('../src/formatters');
 const textFormatter = require('../src/formatters/text');
 const jsonFormatter = require('../src/formatters/json');
 const markdownFormatter = require('../src/formatters/markdown');
@@ -16,6 +17,7 @@ if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
   console.log('  --json           Output as JSON');
   console.log('  --markdown       Output as Markdown');
   console.log('  --csv            Output as CSV');
+  console.log('  --format <name>  Output using named formatter');
   console.log('  --list-checks    List available checks');
   console.log('  --help, -h       Show this help');
   console.log('  --version, -v    Show version');
@@ -52,6 +54,8 @@ if (profileIdx !== -1 && args[profileIdx + 1]) {
 const useJson = args.includes('--json');
 const useMarkdown = args.includes('--markdown');
 const useCsv = args.includes('--csv');
+const formatIdx = args.indexOf('--format');
+const formatName = formatIdx !== -1 ? args[formatIdx + 1] : null;
 
 const result = audit(file, options);
 
@@ -64,6 +68,14 @@ let formatter = textFormatter;
 if (useJson) formatter = jsonFormatter;
 if (useMarkdown) formatter = markdownFormatter;
 if (useCsv) formatter = csvFormatter;
+if (formatName) {
+  const named = getFormatter(formatName);
+  if (!named) {
+    console.error(`Error: unknown format "${formatName}"`);
+    process.exit(1);
+  }
+  formatter = named;
+}
 console.log(formatter.formatResult(result));
 
 const hasErrors = result.checks.some(c =>
