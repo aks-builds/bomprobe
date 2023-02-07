@@ -19,6 +19,7 @@ if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
   console.log('  --csv            Output as CSV');
   console.log('  --format <name>  Output using named formatter');
   console.log('  --list-checks    List available checks');
+  console.log('  --list-formats   List available output formats');
   console.log('  --help, -h       Show this help');
   console.log('  --version, -v    Show version');
   process.exit(0);
@@ -35,6 +36,14 @@ if (args.includes('--list-checks')) {
   const checks = getChecks();
   for (const c of checks) {
     console.log(`${c.id} (weight: ${c.weight}) - ${c.description}`);
+  }
+  process.exit(0);
+}
+
+if (args.includes('--list-formats')) {
+  const { listFormatters } = require('../src/formatters');
+  for (const name of listFormatters()) {
+    console.log(name);
   }
   process.exit(0);
 }
