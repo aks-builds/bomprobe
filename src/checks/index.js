@@ -15,9 +15,11 @@ const checks = [
   require('./spec-version')
 ];
 
-function runAll(sbom) {
+function runAll(sbom, options = {}) {
+  const exclude = options.exclude || [];
   const results = [];
   for (const check of checks) {
+    if (exclude.includes(check.id)) continue;
     const findings = check.run(sbom);
     results.push({
       id: check.id,
