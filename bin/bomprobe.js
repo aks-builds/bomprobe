@@ -20,6 +20,7 @@ if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
   console.log('  --format <name>  Output using named formatter');
   console.log('  --list-checks    List available checks');
   console.log('  --list-formats   List available output formats');
+  console.log('  --exclude <ids>  Skip checks by id (comma-separated)');
   console.log('  --help, -h       Show this help');
   console.log('  --version, -v    Show version');
   process.exit(0);
@@ -65,6 +66,11 @@ const useMarkdown = args.includes('--markdown');
 const useCsv = args.includes('--csv');
 const formatIdx = args.indexOf('--format');
 const formatName = formatIdx !== -1 ? args[formatIdx + 1] : null;
+
+const excludeIdx = args.indexOf('--exclude');
+if (excludeIdx !== -1 && args[excludeIdx + 1]) {
+  options.exclude = args[excludeIdx + 1].split(',');
+}
 
 const result = audit(file, options);
 
