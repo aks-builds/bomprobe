@@ -40,6 +40,15 @@ npm test
 
 Tests use `node:test` and `node:assert/strict`. No test framework needed.
 
+## Writing a formatter
+
+Formatters live in `src/formatters/`. Each exports a `formatResult(result)` function that returns a string.
+
+1. Create `src/formatters/your-format.js`
+2. Register it in `src/formatters/index.js`
+3. Wire the CLI flag in `bin/bomprobe.js`
+4. Add a test in `test/formatters/your-format.test.js`
+
 ## Pull requests
 
 - One feature or fix per PR
