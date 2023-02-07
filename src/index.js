@@ -8,7 +8,7 @@ function audit(filePath, options = {}) {
   if (parsed.error) return { error: parsed.error };
 
   const sbom = parsed.sbom;
-  const checkResults = runAll(sbom);
+  const checkResults = runAll(sbom, { exclude: options.exclude });
   const score = scoreSbom(sbom);
 
   const result = {
