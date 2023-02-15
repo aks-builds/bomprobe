@@ -12,7 +12,8 @@ const checks = [
   require('./component-description'),
   require('./component-cpe'),
   require('./component-type'),
-  require('./spec-version')
+  require('./spec-version'),
+  require('./metadata-license')
 ];
 
 function runAll(sbom, options = {}) {
