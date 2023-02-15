@@ -22,6 +22,7 @@ if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
   console.log('  --list-formats   List available output formats');
   console.log('  --exclude <ids>  Skip checks by id (comma-separated)');
   console.log('  --min-score <n>  Exit with code 3 if score is below n');
+  console.log('  --quiet, -q      Suppress output, exit code only');
   console.log('  --help, -h       Show this help');
   console.log('  --version, -v    Show version');
   process.exit(0);
@@ -92,7 +93,8 @@ if (formatName) {
   }
   formatter = named;
 }
-console.log(formatter.formatResult(result));
+const quiet = args.includes('--quiet') || args.includes('-q');
+if (!quiet) console.log(formatter.formatResult(result));
 
 const hasErrors = result.checks.some(c =>
   c.findings.some(f => f.severity === 'error')
