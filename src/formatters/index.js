@@ -2,8 +2,9 @@ const text = require('./text');
 const json = require('./json');
 const markdown = require('./markdown');
 const csv = require('./csv');
+const summary = require('./summary');
 
-const formatters = { text, json, markdown, csv };
+const formatters = { text, json, markdown, csv, summary };
 
 function getFormatter(name) {
   return formatters[name] || null;
