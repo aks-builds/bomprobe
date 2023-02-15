@@ -56,7 +56,8 @@ function normalize(doc) {
       author: extractCreator(creationInfo),
       timestamp: creationInfo.created || null,
       toolCount: toolCreators.length,
-      specVersion: doc.spdxVersion || null
+      specVersion: doc.spdxVersion || null,
+      documentLicense: doc.dataLicense || null
     },
     components,
     dependencyGraph: {
