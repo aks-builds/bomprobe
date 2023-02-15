@@ -21,6 +21,7 @@ if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
   console.log('  --list-checks    List available checks');
   console.log('  --list-formats   List available output formats');
   console.log('  --exclude <ids>  Skip checks by id (comma-separated)');
+  console.log('  --min-score <n>  Exit with code 3 if score is below n');
   console.log('  --help, -h       Show this help');
   console.log('  --version, -v    Show version');
   process.exit(0);
@@ -97,3 +98,9 @@ const hasErrors = result.checks.some(c =>
   c.findings.some(f => f.severity === 'error')
 );
 if (hasErrors) process.exit(2);
+
+const minScoreIdx = args.indexOf('--min-score');
+if (minScoreIdx !== -1 && args[minScoreIdx + 1]) {
+  const threshold = parseFloat(args[minScoreIdx + 1]);
+  if (result.score.overall < threshold) process.exit(3);
+}
