@@ -55,7 +55,8 @@ function normalize(doc) {
       author: extractAuthor(metadata),
       timestamp: metadata.timestamp || null,
       toolCount: (metadata.tools && metadata.tools.length) || 0,
-      specVersion: doc.specVersion || null
+      specVersion: doc.specVersion || null,
+      documentLicense: null
     },
     components,
     dependencyGraph: {
