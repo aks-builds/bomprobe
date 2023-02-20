@@ -42,7 +42,8 @@ function normalize(doc) {
     cpe: extractCpe(p),
     description: p.description || null,
     hashes: (p.checksums && p.checksums.length) || 0,
-    type: null
+    type: null,
+    scope: null
   }));
 
   const toolCreators = (creationInfo.creators || []).filter(c => c.startsWith('Tool:'));
