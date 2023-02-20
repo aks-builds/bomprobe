@@ -39,7 +39,8 @@ function normalize(doc) {
     cpe: c.cpe || null,
     description: c.description || null,
     hashes: (c.hashes && c.hashes.length) || 0,
-    type: c.type || null
+    type: c.type || null,
+    scope: c.scope || null
   }));
 
   const componentsWithDeps = new Set();
