@@ -1,0 +1,42 @@
+{
+  "spdxVersion": "SPDX-2.2",
+  "dataLicense": "CC0-1.0",
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "name": "legacy-sbom",
+  "creationInfo": {
+    "created": "2023-01-05T12:00:00Z",
+    "creators": [
+      "Tool: scancode-30.1.0",
+      "Organization: Legacy Corp"
+    ]
+  },
+  "packages": [
+    {
+      "SPDXID": "SPDXRef-DOCUMENT",
+      "name": "legacy-sbom",
+      "versionInfo": "1.0.0",
+      "licenseDeclared": "MIT"
+    },
+    {
+      "SPDXID": "SPDXRef-request",
+      "name": "request",
+      "versionInfo": "2.88.2",
+      "licenseDeclared": "Apache-2.0",
+      "supplier": "Organization: Request team",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/request@2.88.2"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "spdxElementId": "SPDXRef-DOCUMENT",
+      "relatedSpdxElement": "SPDXRef-request",
+      "relationshipType": "DESCRIBES"
+    }
+  ]
+}
