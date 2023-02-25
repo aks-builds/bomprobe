@@ -1,8 +1,7 @@
 const { parse } = require('./parsers');
 const { runAll } = require('./checks');
 const { scoreSbom } = require('./scorer');
-const { evaluate: evaluateNtia } = require('./profiles/ntia');
-const { evaluate: evaluateBsi } = require('./profiles/bsi');
+const { getProfile } = require('./profiles');
 
 function audit(filePath, options = {}) {
   const parsed = parse(filePath);
@@ -20,10 +19,11 @@ function audit(filePath, options = {}) {
     componentCount: sbom.components.length
   };
 
-  if (options.profile === 'ntia') {
-    result.compliance = evaluateNtia(checkResults);
-  } else if (options.profile === 'bsi') {
-    result.compliance = evaluateBsi(checkResults);
+  if (options.profile) {
+    const profile = getProfile(options.profile);
+    if (profile) {
+      result.compliance = profile.evaluate(checkResults);
+    }
   }
 
   return result;
