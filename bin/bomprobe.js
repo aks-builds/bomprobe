@@ -22,6 +22,7 @@ if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
   console.log('  --format <name>  Output using named formatter');
   console.log('  --list-checks    List available checks');
   console.log('  --list-formats   List available output formats');
+  console.log('  --list-profiles  List available compliance profiles');
   console.log('  --exclude <ids>  Skip checks by id (comma-separated)');
   console.log('  --min-score <n>  Exit with code 3 if score is below n');
   console.log('  --quiet, -q      Suppress output, exit code only');
@@ -48,6 +49,14 @@ if (args.includes('--list-checks')) {
 if (args.includes('--list-formats')) {
   const { listFormatters } = require('../src/formatters');
   for (const name of listFormatters()) {
+    console.log(name);
+  }
+  process.exit(0);
+}
+
+if (args.includes('--list-profiles')) {
+  const { listProfiles } = require('../src/profiles');
+  for (const name of listProfiles()) {
     console.log(name);
   }
   process.exit(0);
