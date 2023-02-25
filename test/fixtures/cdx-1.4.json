@@ -1,0 +1,26 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.4",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2023-01-10T08:00:00Z",
+    "tools": [
+      { "vendor": "CycloneDX", "name": "cdxgen", "version": "8.0.0" }
+    ],
+    "authors": [
+      { "name": "Test Author" }
+    ]
+  },
+  "components": [
+    {
+      "type": "library",
+      "name": "axios",
+      "version": "1.2.3",
+      "purl": "pkg:npm/axios@1.2.3",
+      "licenses": [{ "license": { "id": "MIT" } }]
+    }
+  ],
+  "dependencies": [
+    { "ref": "pkg:npm/axios@1.2.3", "dependsOn": [] }
+  ]
+}
