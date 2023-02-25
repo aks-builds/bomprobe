@@ -24,16 +24,22 @@ npx bomprobe sbom.json
 ```
 bomprobe <file>              Score an SBOM file
 bomprobe <file> --profile ntia   Check NTIA compliance
+bomprobe <file> --profile bsi    Check BSI TR-03183 compliance
 bomprobe <file> --json           Output as JSON
 bomprobe <file> --markdown       Output as Markdown
 bomprobe <file> --csv            Output as CSV
+bomprobe <file> --summary        Compact one-line output
+bomprobe <file> --min-score 7    Fail if score below threshold
+bomprobe <file> --exclude id,id  Skip specific checks
 bomprobe --list-checks           List all checks
+bomprobe --list-profiles         List compliance profiles
+bomprobe --list-formats          List output formats
 ```
 
 ## Supported formats
 
 - CycloneDX (1.4, 1.5)
-- SPDX (2.3)
+- SPDX (2.2, 2.3)
 
 ## License
 
