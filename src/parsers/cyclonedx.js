@@ -40,7 +40,8 @@ function normalize(doc) {
     description: c.description || null,
     hashes: (c.hashes && c.hashes.length) || 0,
     type: c.type || null,
-    scope: c.scope || null
+    scope: c.scope || null,
+    copyright: c.copyright || null
   }));
 
   const componentsWithDeps = new Set();
