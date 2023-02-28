@@ -15,7 +15,8 @@ const checks = [
   require('./spec-version'),
   require('./metadata-license'),
   require('./unique-purls'),
-  require('./component-scope')
+  require('./component-scope'),
+  require('./valid-purl')
 ];
 
 function runAll(sbom, options = {}) {
