@@ -43,7 +43,8 @@ function normalize(doc) {
     description: p.description || null,
     hashes: (p.checksums && p.checksums.length) || 0,
     type: null,
-    scope: null
+    scope: null,
+    copyright: (p.copyrightText && p.copyrightText !== 'NOASSERTION') ? p.copyrightText : null
   }));
 
   const toolCreators = (creationInfo.creators || []).filter(c => c.startsWith('Tool:'));
