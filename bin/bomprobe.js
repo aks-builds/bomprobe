@@ -25,6 +25,7 @@ if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
   console.log('  --list-profiles  List available compliance profiles');
   console.log('  --exclude <ids>  Skip checks by id (comma-separated)');
   console.log('  --min-score <n>  Exit with code 3 if score is below n');
+  console.log('  --fail-on <sev>  Exit 2 on this severity or above (error|warning|info)');
   console.log('  --quiet, -q      Suppress output, exit code only');
   console.log('  --help, -h       Show this help');
   console.log('  --version, -v    Show version');
@@ -109,10 +110,15 @@ if (formatName) {
 const quiet = args.includes('--quiet') || args.includes('-q');
 if (!quiet) console.log(formatter.formatResult(result));
 
-const hasErrors = result.checks.some(c =>
-  c.findings.some(f => f.severity === 'error')
+const failOnIdx = args.indexOf('--fail-on');
+const failOn = failOnIdx !== -1 ? args[failOnIdx + 1] : 'error';
+const severityRank = { info: 0, warning: 1, error: 2 };
+const threshold = severityRank[failOn] !== undefined ? severityRank[failOn] : 2;
+
+const hasFailure = result.checks.some(c =>
+  c.findings.some(f => (severityRank[f.severity] || 0) >= threshold)
 );
-if (hasErrors) process.exit(2);
+if (hasFailure) process.exit(2);
 
 const minScoreIdx = args.indexOf('--min-score');
 if (minScoreIdx !== -1 && args[minScoreIdx + 1]) {
