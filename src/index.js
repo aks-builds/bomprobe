@@ -29,4 +29,7 @@ function audit(filePath, options = {}) {
   return result;
 }
 
-module.exports = { audit };
+const { compare } = require('./comparator');
+const { componentStats } = require('./utils/stats');
+
+module.exports = { audit, compare, componentStats };
