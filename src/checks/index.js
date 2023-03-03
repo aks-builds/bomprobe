@@ -17,7 +17,8 @@ const checks = [
   require('./unique-purls'),
   require('./component-scope'),
   require('./valid-purl'),
-  require('./component-copyright')
+  require('./component-copyright'),
+  require('./metadata-component')
 ];
 
 function runAll(sbom, options = {}) {
