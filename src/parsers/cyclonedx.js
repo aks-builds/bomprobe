@@ -58,7 +58,8 @@ function normalize(doc) {
       timestamp: metadata.timestamp || null,
       toolCount: (metadata.tools && metadata.tools.length) || 0,
       specVersion: doc.specVersion || null,
-      documentLicense: null
+      documentLicense: null,
+      subjectName: (metadata.component && metadata.component.name) || null
     },
     components,
     dependencyGraph: {
