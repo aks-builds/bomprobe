@@ -26,6 +26,7 @@ if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
   console.log('  --exclude <ids>  Skip checks by id (comma-separated)');
   console.log('  --min-score <n>  Exit with code 3 if score is below n');
   console.log('  --fail-on <sev>  Exit 2 on this severity or above (error|warning|info)');
+  console.log('  --diff <file>    Compare against another SBOM');
   console.log('  --quiet, -q      Suppress output, exit code only');
   console.log('  --help, -h       Show this help');
   console.log('  --version, -v    Show version');
@@ -85,6 +86,27 @@ const formatName = formatIdx !== -1 ? args[formatIdx + 1] : null;
 const excludeIdx = args.indexOf('--exclude');
 if (excludeIdx !== -1 && args[excludeIdx + 1]) {
   options.exclude = args[excludeIdx + 1].split(',');
+}
+
+const diffIdx = args.indexOf('--diff');
+if (diffIdx !== -1 && args[diffIdx + 1]) {
+  const { compare } = require('../src/comparator');
+  const diff = compare(file, args[diffIdx + 1]);
+  if (diff.error) {
+    console.error(`Error: ${diff.error}`);
+    process.exit(1);
+  }
+  console.log(`Comparing: ${diff.fileA} vs ${diff.fileB}`);
+  console.log(`Components: ${diff.componentCountA} -> ${diff.componentCountB}`);
+  if (diff.added.length) console.log(`Added (${diff.added.length}): ${diff.added.join(', ')}`);
+  if (diff.removed.length) console.log(`Removed (${diff.removed.length}): ${diff.removed.join(', ')}`);
+  if (diff.versionChanges.length) {
+    for (const vc of diff.versionChanges) {
+      console.log(`Changed: ${vc.name} ${vc.from} -> ${vc.to}`);
+    }
+  }
+  console.log(`Unchanged: ${diff.unchanged}`);
+  process.exit(0);
 }
 
 const result = audit(file, options);
