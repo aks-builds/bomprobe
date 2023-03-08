@@ -31,5 +31,6 @@ function audit(filePath, options = {}) {
 
 const { compare } = require('./comparator');
 const { componentStats } = require('./utils/stats');
+const { merge } = require('./merger');
 
-module.exports = { audit, compare, componentStats };
+module.exports = { audit, compare, componentStats, merge };
