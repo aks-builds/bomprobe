@@ -18,7 +18,8 @@ const checks = [
   require('./component-scope'),
   require('./valid-purl'),
   require('./component-copyright'),
-  require('./metadata-component')
+  require('./metadata-component'),
+  require('./component-external-refs')
 ];
 
 function runAll(sbom, options = {}) {
