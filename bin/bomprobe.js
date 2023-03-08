@@ -29,6 +29,7 @@ if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
   console.log('  --min-score <n>  Exit with code 3 if score is below n');
   console.log('  --fail-on <sev>  Exit 2 on this severity or above (error|warning|info)');
   console.log('  --diff <file>    Compare against another SBOM');
+  console.log('  --stats          Show component field coverage statistics');
   console.log('  --quiet, -q      Suppress output, exit code only');
   console.log('  --help, -h       Show this help');
   console.log('  --version, -v    Show version');
@@ -133,6 +134,20 @@ if (formatName) {
   }
   formatter = named;
 }
+if (args.includes('--stats')) {
+  const { parse } = require('../src/parsers');
+  const { componentStats } = require('../src/utils/stats');
+  const parsed = parse(file);
+  if (!parsed.error) {
+    const stats = componentStats(parsed.sbom);
+    console.log(`Components: ${stats.total}`);
+    console.log(`License coverage: ${(stats.licenseCoverage * 100).toFixed(0)}%`);
+    console.log(`PURL coverage: ${(stats.purlCoverage * 100).toFixed(0)}%`);
+    console.log(`Hash coverage: ${(stats.hashCoverage * 100).toFixed(0)}%`);
+    console.log(`Supplier coverage: ${(stats.supplierCoverage * 100).toFixed(0)}%`);
+  }
+}
+
 const quiet = args.includes('--quiet') || args.includes('-q');
 if (!quiet) console.log(formatter.formatResult(result));
 
