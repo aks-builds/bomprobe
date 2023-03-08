@@ -7,6 +7,7 @@ const jsonFormatter = require('../src/formatters/json');
 const markdownFormatter = require('../src/formatters/markdown');
 const csvFormatter = require('../src/formatters/csv');
 const summaryFormatter = require('../src/formatters/summary');
+const sarifFormatter = require('../src/formatters/sarif');
 
 const args = process.argv.slice(2);
 
@@ -19,6 +20,7 @@ if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
   console.log('  --markdown       Output as Markdown');
   console.log('  --csv            Output as CSV');
   console.log('  --summary        Output compact one-line summary');
+  console.log('  --sarif          Output as SARIF 2.1.0');
   console.log('  --format <name>  Output using named formatter');
   console.log('  --list-checks    List available checks');
   console.log('  --list-formats   List available output formats');
@@ -80,6 +82,7 @@ const useJson = args.includes('--json');
 const useMarkdown = args.includes('--markdown');
 const useCsv = args.includes('--csv');
 const useSummary = args.includes('--summary');
+const useSarif = args.includes('--sarif');
 const formatIdx = args.indexOf('--format');
 const formatName = formatIdx !== -1 ? args[formatIdx + 1] : null;
 
@@ -121,6 +124,7 @@ if (useJson) formatter = jsonFormatter;
 if (useMarkdown) formatter = markdownFormatter;
 if (useCsv) formatter = csvFormatter;
 if (useSummary) formatter = summaryFormatter;
+if (useSarif) formatter = sarifFormatter;
 if (formatName) {
   const named = getFormatter(formatName);
   if (!named) {
