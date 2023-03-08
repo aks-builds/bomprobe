@@ -1,0 +1,31 @@
+name: SBOM Quality Gate (example)
+
+on:
+  workflow_dispatch:
+    inputs:
+      sbom-file:
+        description: Path to SBOM file
+        required: true
+        default: sbom.json
+
+jobs:
+  quality-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install bomprobe
+        run: npm install -g bomprobe
+
+      - name: Run bomprobe with SARIF output
+        run: bomprobe ${{ github.event.inputs.sbom-file }} --sarif > results.sarif
+        continue-on-error: true
+
+      - name: Upload SARIF to GitHub
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: results.sarif
