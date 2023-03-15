@@ -19,7 +19,8 @@ const checks = [
   require('./valid-purl'),
   require('./component-copyright'),
   require('./metadata-component'),
-  require('./component-external-refs')
+  require('./component-external-refs'),
+  require('./metadata-serial-number')
 ];
 
 function runAll(sbom, options = {}) {
