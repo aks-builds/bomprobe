@@ -32,6 +32,7 @@ if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
   console.log('  --fail-on <sev>  Exit 2 on this severity or above (error|warning|info)');
   console.log('  --diff <file>    Compare against another SBOM');
   console.log('  --stats          Show component field coverage statistics');
+  console.log('  --validate       Run structural validation before audit');
   console.log('  --quiet, -q      Suppress output, exit code only');
   console.log('  --help, -h       Show this help');
   console.log('  --version, -v    Show version');
@@ -114,6 +115,22 @@ if (diffIdx !== -1 && args[diffIdx + 1]) {
   }
   console.log(`Unchanged: ${diff.unchanged}`);
   process.exit(0);
+}
+
+if (args.includes('--validate')) {
+  const { parse } = require('../src/parsers');
+  const { validate } = require('../src/validator');
+  const parsed = parse(file);
+  if (parsed.error) {
+    console.error(`Parse error: ${parsed.error}`);
+    process.exit(1);
+  }
+  const validation = validate(parsed.sbom);
+  if (!validation.valid) {
+    console.error('Validation failed:');
+    for (const e of validation.errors) console.error(`  - ${e}`);
+    process.exit(4);
+  }
 }
 
 const result = audit(file, options);
