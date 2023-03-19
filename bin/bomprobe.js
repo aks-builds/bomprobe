@@ -33,6 +33,7 @@ if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
   console.log('  --diff <file>    Compare against another SBOM');
   console.log('  --stats          Show component field coverage statistics');
   console.log('  --validate       Run structural validation before audit');
+  console.log('  --output <file>  Write output to file instead of stdout');
   console.log('  --quiet, -q      Suppress output, exit code only');
   console.log('  --help, -h       Show this help');
   console.log('  --version, -v    Show version');
@@ -170,7 +171,16 @@ if (args.includes('--stats')) {
 }
 
 const quiet = args.includes('--quiet') || args.includes('-q');
-if (!quiet) console.log(formatter.formatResult(result));
+const outputIdx = args.indexOf('--output');
+const outputFile = outputIdx !== -1 ? args[outputIdx + 1] : null;
+const formatted = formatter.formatResult(result);
+
+if (outputFile) {
+  require('node:fs').writeFileSync(outputFile, formatted, 'utf8');
+  if (!quiet) console.log(`Output written to ${outputFile}`);
+} else if (!quiet) {
+  console.log(formatted);
+}
 
 const failOnIdx = args.indexOf('--fail-on');
 const failOn = failOnIdx !== -1 ? args[failOnIdx + 1] : 'error';
