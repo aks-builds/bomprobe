@@ -20,7 +20,8 @@ const checks = [
   require('./component-copyright'),
   require('./metadata-component'),
   require('./component-external-refs'),
-  require('./metadata-serial-number')
+  require('./metadata-serial-number'),
+  require('./component-dependencies')
 ];
 
 function runAll(sbom, options = {}) {
