@@ -21,7 +21,8 @@ const checks = [
   require('./metadata-component'),
   require('./component-external-refs'),
   require('./metadata-serial-number'),
-  require('./component-dependencies')
+  require('./component-dependencies'),
+  require('./component-completeness')
 ];
 
 function runAll(sbom, options = {}) {
