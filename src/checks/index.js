@@ -23,7 +23,8 @@ const checks = [
   require('./metadata-serial-number'),
   require('./component-dependencies'),
   require('./component-completeness'),
-  require('./duplicate-components')
+  require('./duplicate-components'),
+  require('./metadata-lifecycle')
 ];
 
 function runAll(sbom, options = {}) {
