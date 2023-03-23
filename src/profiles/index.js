@@ -1,14 +1,25 @@
 const ntia = require('./ntia');
 const bsi = require('./bsi');
+const { createProfile } = require('./custom');
+const { getConfig } = require('../config');
 
-const profiles = { ntia, bsi };
+const builtins = { ntia, bsi };
 
 function getProfile(name) {
-  return profiles[name] || null;
+  if (builtins[name]) return builtins[name];
+
+  const config = getConfig();
+  if (config && config.profiles && config.profiles[name]) {
+    return createProfile(name, config.profiles[name]);
+  }
+
+  return null;
 }
 
 function listProfiles() {
-  return Object.keys(profiles);
+  const config = getConfig();
+  const custom = config && config.profiles ? Object.keys(config.profiles) : [];
+  return [...Object.keys(builtins), ...custom];
 }
 
 module.exports = { getProfile, listProfiles };
