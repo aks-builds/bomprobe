@@ -28,9 +28,11 @@ const checks = [
 
 function runAll(sbom, options = {}) {
   const exclude = options.exclude || [];
+  const only = options.only || null;
   const results = [];
   for (const check of checks) {
     if (exclude.includes(check.id)) continue;
+    if (only && !only.includes(check.id)) continue;
     const findings = check.run(sbom);
     results.push({
       id: check.id,

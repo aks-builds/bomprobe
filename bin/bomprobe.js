@@ -28,6 +28,7 @@ if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
   console.log('  --list-formats   List available output formats');
   console.log('  --list-profiles  List available compliance profiles');
   console.log('  --exclude <ids>  Skip checks by id (comma-separated)');
+  console.log('  --only <ids>     Run only these checks (comma-separated)');
   console.log('  --min-score <n>  Exit with code 3 if score is below n');
   console.log('  --fail-on <sev>  Exit 2 on this severity or above (error|warning|info)');
   console.log('  --diff <file>    Compare against another SBOM');
@@ -95,6 +96,11 @@ const formatName = formatIdx !== -1 ? args[formatIdx + 1] : null;
 const excludeIdx = args.indexOf('--exclude');
 if (excludeIdx !== -1 && args[excludeIdx + 1]) {
   options.exclude = args[excludeIdx + 1].split(',');
+}
+
+const onlyIdx = args.indexOf('--only');
+if (onlyIdx !== -1 && args[onlyIdx + 1]) {
+  options.only = args[onlyIdx + 1].split(',');
 }
 
 const diffIdx = args.indexOf('--diff');
