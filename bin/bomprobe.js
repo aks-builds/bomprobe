@@ -35,6 +35,7 @@ if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
   console.log('  --stats          Show component field coverage statistics');
   console.log('  --validate       Run structural validation before audit');
   console.log('  --output <file>  Write output to file instead of stdout');
+  console.log('  --list-components  List all components in the SBOM');
   console.log('  --quiet, -q      Suppress output, exit code only');
   console.log('  --help, -h       Show this help');
   console.log('  --version, -v    Show version');
@@ -76,6 +77,21 @@ const file = args.find(a => !a.startsWith('-'));
 if (!file) {
   console.error('Error: no file specified');
   process.exit(1);
+}
+
+if (args.includes('--list-components')) {
+  const { parse } = require('../src/parsers');
+  const parsed = parse(file);
+  if (parsed.error) {
+    console.error(`Error: ${parsed.error}`);
+    process.exit(1);
+  }
+  for (const c of parsed.sbom.components) {
+    const ver = c.version ? `@${c.version}` : '';
+    const lic = c.license ? ` [${c.license}]` : '';
+    console.log(`${c.name || 'unnamed'}${ver}${lic}`);
+  }
+  process.exit(0);
 }
 
 const options = {};
