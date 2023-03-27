@@ -25,7 +25,8 @@ const checks = [
   require('./component-completeness'),
   require('./duplicate-components'),
   require('./metadata-lifecycle'),
-  require('./license-expression')
+  require('./license-expression'),
+  require('./purl-type')
 ];
 
 function runAll(sbom, options = {}) {
