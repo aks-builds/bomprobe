@@ -24,7 +24,8 @@ const checks = [
   require('./component-dependencies'),
   require('./component-completeness'),
   require('./duplicate-components'),
-  require('./metadata-lifecycle')
+  require('./metadata-lifecycle'),
+  require('./license-expression')
 ];
 
 function runAll(sbom, options = {}) {
