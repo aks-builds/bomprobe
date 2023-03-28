@@ -1,6 +1,6 @@
 {
   "name": "bomprobe",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "SBOM quality auditor for CycloneDX and SPDX",
   "main": "src/index.js",
   "bin": {
