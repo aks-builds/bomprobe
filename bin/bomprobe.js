@@ -36,6 +36,7 @@ if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
   console.log('  --validate       Run structural validation before audit');
   console.log('  --output <file>  Write output to file instead of stdout');
   console.log('  --list-components  List all components in the SBOM');
+  console.log('  --fingerprint    Print SHA-256 hash of the SBOM file');
   console.log('  --quiet, -q      Suppress output, exit code only');
   console.log('  --help, -h       Show this help');
   console.log('  --version, -v    Show version');
@@ -77,6 +78,12 @@ const file = args.find(a => !a.startsWith('-'));
 if (!file) {
   console.error('Error: no file specified');
   process.exit(1);
+}
+
+if (args.includes('--fingerprint')) {
+  const { hashFile } = require('../src/utils/hash');
+  console.log(hashFile(file));
+  process.exit(0);
 }
 
 if (args.includes('--list-components')) {
