@@ -27,7 +27,8 @@ const checks = [
   require('./metadata-lifecycle'),
   require('./license-expression'),
   require('./purl-type'),
-  require('./version-consistency')
+  require('./version-consistency'),
+  require('./supplier-url')
 ];
 
 function runAll(sbom, options = {}) {
