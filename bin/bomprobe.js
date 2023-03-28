@@ -37,6 +37,7 @@ if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
   console.log('  --output <file>  Write output to file instead of stdout');
   console.log('  --list-components  List all components in the SBOM');
   console.log('  --fingerprint    Print SHA-256 hash of the SBOM file');
+  console.log('  --count          Print only the total finding count');
   console.log('  --quiet, -q      Suppress output, exit code only');
   console.log('  --help, -h       Show this help');
   console.log('  --version, -v    Show version');
@@ -197,6 +198,12 @@ if (args.includes('--stats')) {
     console.log(`Hash coverage: ${(stats.hashCoverage * 100).toFixed(0)}%`);
     console.log(`Supplier coverage: ${(stats.supplierCoverage * 100).toFixed(0)}%`);
   }
+}
+
+if (args.includes('--count')) {
+  const total = result.checks.reduce((sum, c) => sum + c.findings.length, 0);
+  console.log(total);
+  process.exit(total > 0 ? 2 : 0);
 }
 
 const quiet = args.includes('--quiet') || args.includes('-q');
