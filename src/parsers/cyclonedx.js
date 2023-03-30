@@ -39,6 +39,7 @@ function normalize(doc) {
     cpe: c.cpe || null,
     description: c.description || null,
     hashes: (c.hashes && c.hashes.length) || 0,
+    hashAlgorithms: c.hashes ? c.hashes.map(h => h.alg || null).filter(Boolean) : [],
     type: c.type || null,
     scope: c.scope || null,
     copyright: c.copyright || null
