@@ -42,6 +42,7 @@ function normalize(doc) {
     cpe: extractCpe(p),
     description: p.description || null,
     hashes: (p.checksums && p.checksums.length) || 0,
+    hashAlgorithms: p.checksums ? p.checksums.map(h => h.algorithm || null).filter(Boolean) : [],
     type: null,
     scope: null,
     copyright: (p.copyrightText && p.copyrightText !== 'NOASSERTION') ? p.copyrightText : null
