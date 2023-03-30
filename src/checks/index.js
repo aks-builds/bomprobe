@@ -28,7 +28,8 @@ const checks = [
   require('./license-expression'),
   require('./purl-type'),
   require('./version-consistency'),
-  require('./supplier-url')
+  require('./supplier-url'),
+  require('./hash-algorithm')
 ];
 
 function runAll(sbom, options = {}) {
