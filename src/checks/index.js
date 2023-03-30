@@ -29,7 +29,8 @@ const checks = [
   require('./purl-type'),
   require('./version-consistency'),
   require('./supplier-url'),
-  require('./hash-algorithm')
+  require('./hash-algorithm'),
+  require('./metadata-spec-compliance')
 ];
 
 function runAll(sbom, options = {}) {
