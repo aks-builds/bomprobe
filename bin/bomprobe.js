@@ -38,6 +38,7 @@ if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
   console.log('  --list-components  List all components in the SBOM');
   console.log('  --fingerprint    Print SHA-256 hash of the SBOM file');
   console.log('  --count          Print only the total finding count');
+  console.log('  --report         Output structured markdown report');
   console.log('  --quiet, -q      Suppress output, exit code only');
   console.log('  --help, -h       Show this help');
   console.log('  --version, -v    Show version');
@@ -204,6 +205,12 @@ if (args.includes('--count')) {
   const total = result.checks.reduce((sum, c) => sum + c.findings.length, 0);
   console.log(total);
   process.exit(total > 0 ? 2 : 0);
+}
+
+if (args.includes('--report')) {
+  const { generateReport } = require('../src/reporter');
+  console.log(generateReport(result));
+  process.exit(0);
 }
 
 const quiet = args.includes('--quiet') || args.includes('-q');
