@@ -17,7 +17,7 @@ describe('metadata-document-namespace check', () => {
     const sbom = { metadata: { documentNamespace: null, serialNumber: null } };
     const findings = check.run(sbom);
     assert.equal(findings.length, 1);
-    assert.equal(findings[0].severity, 'error');
+    assert.equal(findings[0].severity, 'warning');
   });
 
   it('warns on non-URI namespace', () => {

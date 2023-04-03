@@ -1,5 +1,6 @@
 const { describe, it } = require('node:test');
 const assert = require('node:assert/strict');
+require('../../src/utils/color').disable();
 const { formatResult } = require('../../src/formatters/text');
 
 describe('text formatter', () => {

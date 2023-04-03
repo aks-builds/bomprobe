@@ -10,7 +10,7 @@ module.exports = {
 
     if (!ns && !serial) {
       findings.push({
-        severity: 'error',
+        severity: 'warning',
         message: 'SBOM has no document namespace or serial number for unique identification'
       });
       return findings;
