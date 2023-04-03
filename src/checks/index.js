@@ -30,7 +30,8 @@ const checks = [
   require('./version-consistency'),
   require('./supplier-url'),
   require('./hash-algorithm'),
-  require('./metadata-spec-compliance')
+  require('./metadata-spec-compliance'),
+  require('./component-namespace')
 ];
 
 function runAll(sbom, options = {}) {
