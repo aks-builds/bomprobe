@@ -1,5 +1,9 @@
 #!/usr/bin/env node
 
+if (process.argv.includes('--no-color')) {
+  require('../src/utils/color').disable();
+}
+
 const { audit } = require('../src');
 const { getFormatter } = require('../src/formatters');
 const textFormatter = require('../src/formatters/text');
