@@ -31,7 +31,8 @@ const checks = [
   require('./supplier-url'),
   require('./hash-algorithm'),
   require('./metadata-spec-compliance'),
-  require('./component-namespace')
+  require('./component-namespace'),
+  require('./component-hash-completeness')
 ];
 
 function runAll(sbom, options = {}) {
