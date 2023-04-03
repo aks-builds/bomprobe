@@ -39,6 +39,7 @@ if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
   console.log('  --fingerprint    Print SHA-256 hash of the SBOM file');
   console.log('  --count          Print only the total finding count');
   console.log('  --report         Output structured markdown report');
+  console.log('  --group-by <key> Group findings by severity or component');
   console.log('  --quiet, -q      Suppress output, exit code only');
   console.log('  --help, -h       Show this help');
   console.log('  --version, -v    Show version');
@@ -210,6 +211,20 @@ if (args.includes('--count')) {
 if (args.includes('--report')) {
   const { generateReport } = require('../src/reporter');
   console.log(generateReport(result));
+  process.exit(0);
+}
+
+const groupByIdx = args.indexOf('--group-by');
+if (groupByIdx !== -1) {
+  const key = args[groupByIdx + 1];
+  const { groupBySeverity, groupByComponent } = require('../src/utils/groupBy');
+  const groups = key === 'component' ? groupByComponent(result.checks) : groupBySeverity(result.checks);
+  for (const [group, findings] of Object.entries(groups)) {
+    console.log(`\n[${group}] (${findings.length})`);
+    for (const f of findings) {
+      console.log(`  ${f.checkName}: ${f.message}`);
+    }
+  }
   process.exit(0);
 }
 
