@@ -1,13 +1,16 @@
+const { red, yellow, blue, green, bold, dim } = require('../utils/color');
+
 function formatScore(score) {
   const bar = '='.repeat(Math.round(score.overall));
   const empty = ' '.repeat(10 - Math.round(score.overall));
-  return `[${bar}${empty}] ${score.overall}/10`;
+  const colorFn = score.overall >= 7 ? green : score.overall >= 4 ? yellow : red;
+  return `[${colorFn(bar)}${empty}] ${bold(score.overall + '/10')}`;
 }
 
 function formatResult(result) {
   const lines = [];
 
-  lines.push(`bomprobe: ${result.file}`);
+  lines.push(bold(`bomprobe: ${result.file}`));
   lines.push(`Format: ${result.format} (${result.componentCount} components)`);
   lines.push('');
   lines.push(`Score: ${formatScore(result.score)}`);
@@ -24,23 +27,24 @@ function formatResult(result) {
   }
 
   if (findings.length === 0) {
-    lines.push('No issues found.');
+    lines.push(green('No issues found.'));
   } else {
     lines.push(`${findings.length} issue${findings.length === 1 ? '' : 's'} found:`);
     lines.push('');
     for (const f of findings) {
-      const icon = f.severity === 'error' ? 'ERR' : f.severity === 'warning' ? 'WRN' : 'INF';
+      const icon = f.severity === 'error' ? red('ERR') : f.severity === 'warning' ? yellow('WRN') : blue('INF');
       lines.push(`  [${icon}] ${f.message}`);
     }
   }
 
   if (result.compliance) {
     lines.push('');
-    lines.push(`NTIA Compliance: ${result.compliance.compliant ? 'PASS' : 'FAIL'}`);
+    const status = result.compliance.compliant ? green('PASS') : red('FAIL');
+    lines.push(`NTIA Compliance: ${status}`);
     lines.push(`  ${result.compliance.summary}`);
     if (result.compliance.failed.length > 0) {
       for (const f of result.compliance.failed) {
-        lines.push(`  FAIL: ${f.id} - ${f.reason}`);
+        lines.push(`  ${red('FAIL')}: ${f.id} - ${f.reason}`);
       }
     }
   }
