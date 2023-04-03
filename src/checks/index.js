@@ -32,7 +32,8 @@ const checks = [
   require('./hash-algorithm'),
   require('./metadata-spec-compliance'),
   require('./component-namespace'),
-  require('./component-hash-completeness')
+  require('./component-hash-completeness'),
+  require('./metadata-document-namespace')
 ];
 
 function runAll(sbom, options = {}) {
