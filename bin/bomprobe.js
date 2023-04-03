@@ -40,6 +40,7 @@ if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
   console.log('  --count          Print only the total finding count');
   console.log('  --report         Output structured markdown report');
   console.log('  --group-by <key> Group findings by severity or component');
+  console.log('  --severity <sev> Show only findings of this severity');
   console.log('  --quiet, -q      Suppress output, exit code only');
   console.log('  --help, -h       Show this help');
   console.log('  --version, -v    Show version');
@@ -171,6 +172,14 @@ const result = audit(file, options);
 if (result.error) {
   console.error(`Error: ${result.error}`);
   process.exit(1);
+}
+
+const severityFilterIdx = args.indexOf('--severity');
+if (severityFilterIdx !== -1 && args[severityFilterIdx + 1]) {
+  const sev = args[severityFilterIdx + 1];
+  for (const check of result.checks) {
+    check.findings = check.findings.filter(f => f.severity === sev);
+  }
 }
 
 let formatter = textFormatter;
