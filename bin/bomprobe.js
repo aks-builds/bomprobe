@@ -45,6 +45,7 @@ if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
   console.log('  --report         Output structured markdown report');
   console.log('  --group-by <key> Group findings by severity or component');
   console.log('  --severity <sev> Show only findings of this severity');
+  console.log('  --license-summary  Show license type breakdown');
   console.log('  --quiet, -q      Suppress output, exit code only');
   console.log('  --help, -h       Show this help');
   console.log('  --version, -v    Show version');
@@ -219,6 +220,27 @@ if (args.includes('--count')) {
   const total = result.checks.reduce((sum, c) => sum + c.findings.length, 0);
   console.log(total);
   process.exit(total > 0 ? 2 : 0);
+}
+
+if (args.includes('--license-summary')) {
+  const { parse } = require('../src/parsers');
+  const { summarizeLicenses } = require('../src/utils/licenseSummary');
+  const parsed = parse(file);
+  if (!parsed.error) {
+    const summary = summarizeLicenses(parsed.sbom);
+    console.log(`License Summary (${summary.total} components):`);
+    console.log(`  Permissive: ${summary.counts.permissive}`);
+    console.log(`  Copyleft:   ${summary.counts.copyleft}`);
+    console.log(`  Unknown:    ${summary.counts.unknown}`);
+    console.log(`  No license: ${summary.counts.none}`);
+    if (summary.licenses.length > 0) {
+      console.log('\nTop licenses:');
+      for (const l of summary.licenses.slice(0, 10)) {
+        console.log(`  ${l.id}: ${l.count} (${l.type})`);
+      }
+    }
+  }
+  process.exit(0);
 }
 
 if (args.includes('--report')) {
