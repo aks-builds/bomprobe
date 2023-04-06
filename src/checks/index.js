@@ -35,7 +35,8 @@ const checks = [
   require('./component-hash-completeness'),
   require('./metadata-document-namespace'),
   require('./license-compatibility'),
-  require('./dependency-depth')
+  require('./dependency-depth'),
+  require('./component-age')
 ];
 
 function runAll(sbom, options = {}) {
