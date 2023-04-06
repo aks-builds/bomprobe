@@ -83,6 +83,20 @@ if (args.includes('--list-profiles')) {
   process.exit(0);
 }
 
+if (args.includes('--validate-config')) {
+  const { getConfig } = require('../src/config');
+  const { validateConfig } = require('../src/configSchema');
+  const config = getConfig();
+  const result = validateConfig(config);
+  if (result.valid) {
+    console.log('Config is valid.');
+  } else {
+    console.error('Config errors:');
+    for (const e of result.errors) console.error(`  - ${e}`);
+  }
+  process.exit(result.valid ? 0 : 1);
+}
+
 const file = args.find(a => !a.startsWith('-'));
 if (!file) {
   console.error('Error: no file specified');
