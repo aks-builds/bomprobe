@@ -42,7 +42,9 @@ const checks = [
   require('./license-deprecated'),
   require('./component-download-url'),
   require('./metadata-properties'),
-  require('./component-evidence')
+  require('./component-evidence'),
+  require('./component-modified'),
+  require('./metadata-manufacture')
 ];
 
 function runAll(sbom, options = {}) {
