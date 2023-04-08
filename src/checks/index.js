@@ -38,7 +38,11 @@ const checks = [
   require('./dependency-depth'),
   require('./component-age'),
   require('./supplier-concentration'),
-  require('./component-prerelease')
+  require('./component-prerelease'),
+  require('./license-deprecated'),
+  require('./component-download-url'),
+  require('./metadata-properties'),
+  require('./component-evidence')
 ];
 
 function runAll(sbom, options = {}) {
