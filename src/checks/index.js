@@ -53,7 +53,9 @@ const checks = [
   require('./composition-completeness'),
   require('./vulnerability-refs'),
   require('./service-data'),
-  require('./component-patch-diff')
+  require('./component-patch-diff'),
+  require('./component-group'),
+  require('./metadata-revision')
 ];
 
 function runAll(sbom, options = {}) {
