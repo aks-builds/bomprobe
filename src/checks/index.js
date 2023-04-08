@@ -49,7 +49,9 @@ const checks = [
   require('./dependency-completeness'),
   require('./component-swid'),
   require('./component-bomref'),
-  require('./metadata-supplier')
+  require('./metadata-supplier'),
+  require('./composition-completeness'),
+  require('./vulnerability-refs')
 ];
 
 function runAll(sbom, options = {}) {
