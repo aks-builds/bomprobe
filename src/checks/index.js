@@ -58,7 +58,9 @@ const checks = [
   require('./metadata-revision'),
   require('./component-crypto'),
   require('./component-author'),
-  require('./spdx-creator-info')
+  require('./spdx-creator-info'),
+  require('./spdx-document-namespace'),
+  require('./spdx-relationship-completeness')
 ];
 
 function runAll(sbom, options = {}) {
