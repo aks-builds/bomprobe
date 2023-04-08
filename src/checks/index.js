@@ -55,7 +55,10 @@ const checks = [
   require('./service-data'),
   require('./component-patch-diff'),
   require('./component-group'),
-  require('./metadata-revision')
+  require('./metadata-revision'),
+  require('./component-crypto'),
+  require('./component-author'),
+  require('./spdx-creator-info')
 ];
 
 function runAll(sbom, options = {}) {
