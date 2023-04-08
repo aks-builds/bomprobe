@@ -46,7 +46,10 @@ const checks = [
   require('./component-modified'),
   require('./metadata-manufacture'),
   require('./bom-freshness'),
-  require('./dependency-completeness')
+  require('./dependency-completeness'),
+  require('./component-swid'),
+  require('./component-bomref'),
+  require('./metadata-supplier')
 ];
 
 function runAll(sbom, options = {}) {
