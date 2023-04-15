@@ -60,7 +60,9 @@ const checks = [
   require('./component-author'),
   require('./spdx-creator-info'),
   require('./spdx-document-namespace'),
-  require('./spdx-relationship-completeness')
+  require('./spdx-relationship-completeness'),
+  require('./component-mime'),
+  require('./component-release-notes')
 ];
 
 function runAll(sbom, options = {}) {
