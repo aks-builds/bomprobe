@@ -17,8 +17,7 @@
     },
     {
       "type": "library",
-      "name": "some-lib",
-      "version": "2.0.0"
+      "name": "some-lib"
     },
     {
       "type": "library",
