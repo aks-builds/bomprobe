@@ -1,0 +1,30 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.3",
+  "components": [
+    {
+      "type": "library",
+      "name": "some-lib"
+    },
+    {
+      "type": "library",
+      "name": "another-lib",
+      "version": "1.0.0"
+    },
+    {
+      "name": "no-type-lib",
+      "version": "0.1.0-alpha"
+    },
+    {
+      "type": "library",
+      "name": "some-lib",
+      "version": "2.0.0"
+    },
+    {
+      "type": "library",
+      "name": "old-license-lib",
+      "version": "3.0.0",
+      "licenses": [{ "license": { "id": "GPL-2.0" } }]
+    }
+  ]
+}
