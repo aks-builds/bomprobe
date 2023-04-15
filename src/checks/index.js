@@ -62,7 +62,9 @@ const checks = [
   require('./spdx-document-namespace'),
   require('./spdx-relationship-completeness'),
   require('./component-mime'),
-  require('./component-release-notes')
+  require('./component-release-notes'),
+  require('./component-eol'),
+  require('./spdx-license-list')
 ];
 
 function runAll(sbom, options = {}) {
