@@ -64,7 +64,10 @@ const checks = [
   require('./component-mime'),
   require('./component-release-notes'),
   require('./component-eol'),
-  require('./spdx-license-list')
+  require('./spdx-license-list'),
+  require('./component-provenance'),
+  require('./metadata-lifecyclephase'),
+  require('./dependency-license-conflict')
 ];
 
 function runAll(sbom, options = {}) {
