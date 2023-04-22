@@ -71,7 +71,10 @@ const checks = [
   require('./component-patch-status'),
   require('./spdx-package-verification'),
   require('./component-build-env'),
-  require('./metadata-bom-format')
+  require('./metadata-bom-format'),
+  require('./dependency-cycle'),
+  require('./component-identity'),
+  require('./metadata-tool-version')
 ];
 
 function runAll(sbom, options = {}) {
