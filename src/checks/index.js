@@ -74,7 +74,9 @@ const checks = [
   require('./metadata-bom-format'),
   require('./dependency-cycle'),
   require('./component-identity'),
-  require('./metadata-tool-version')
+  require('./metadata-tool-version'),
+  require('./spdx-external-document-refs'),
+  require('./component-dependency-count')
 ];
 
 function runAll(sbom, options = {}) {
