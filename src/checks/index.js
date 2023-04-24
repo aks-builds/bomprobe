@@ -85,7 +85,8 @@ const checks = [
   require('./component-nested-bom'),
   require('./component-maturity'),
   require('./dependency-orphan'),
-  require('./spdx-file-info')
+  require('./spdx-file-info'),
+  require('./component-reproducible')
 ];
 
 function runAll(sbom, options = {}) {
