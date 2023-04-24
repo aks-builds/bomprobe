@@ -78,7 +78,9 @@ const checks = [
   require('./spdx-external-document-refs'),
   require('./component-dependency-count'),
   require('./component-license-compatibility'),
-  require('./spdx-snippet-info')
+  require('./spdx-snippet-info'),
+  require('./component-source-url'),
+  require('./metadata-composition')
 ];
 
 function runAll(sbom, options = {}) {
