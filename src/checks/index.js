@@ -80,7 +80,9 @@ const checks = [
   require('./component-license-compatibility'),
   require('./spdx-snippet-info'),
   require('./component-source-url'),
-  require('./metadata-composition')
+  require('./metadata-composition'),
+  require('./spdx-data-license'),
+  require('./component-nested-bom')
 ];
 
 function runAll(sbom, options = {}) {
