@@ -83,7 +83,9 @@ const checks = [
   require('./metadata-composition'),
   require('./spdx-data-license'),
   require('./component-nested-bom'),
-  require('./component-maturity')
+  require('./component-maturity'),
+  require('./dependency-orphan'),
+  require('./spdx-file-info')
 ];
 
 function runAll(sbom, options = {}) {
