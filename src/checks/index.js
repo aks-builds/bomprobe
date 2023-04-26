@@ -96,7 +96,8 @@ const checks = [
   require('./component-classifier'),
   require('./dependency-license-tree'),
   require('./component-encoding'),
-  require('./metadata-timestamp-format')
+  require('./metadata-timestamp-format'),
+  require('./spdx-relationship-types')
 ];
 
 function runAll(sbom, options = {}) {
