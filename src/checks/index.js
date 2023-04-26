@@ -106,7 +106,8 @@ const checks = [
   require('./component-alternative'),
   require('./spdx-extracted-license'),
   require('./component-commit-hash'),
-  require('./dependency-scope-mismatch')
+  require('./dependency-scope-mismatch'),
+  require('./metadata-bom-ref')
 ];
 
 function runAll(sbom, options = {}) {
