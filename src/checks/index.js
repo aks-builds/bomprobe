@@ -90,7 +90,9 @@ const checks = [
   require('./metadata-serial-format'),
   require('./component-platform'),
   require('./component-deprecated-license'),
-  require('./spdx-annotation-info')
+  require('./spdx-annotation-info'),
+  require('./component-vcs-ref'),
+  require('./metadata-bom-version')
 ];
 
 function runAll(sbom, options = {}) {
