@@ -97,7 +97,9 @@ const checks = [
   require('./dependency-license-tree'),
   require('./component-encoding'),
   require('./metadata-timestamp-format'),
-  require('./spdx-relationship-types')
+  require('./spdx-relationship-types'),
+  require('./component-trust-boundary'),
+  require('./dependency-depth-warning')
 ];
 
 function runAll(sbom, options = {}) {
