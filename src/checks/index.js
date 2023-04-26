@@ -99,7 +99,8 @@ const checks = [
   require('./metadata-timestamp-format'),
   require('./spdx-relationship-types'),
   require('./component-trust-boundary'),
-  require('./dependency-depth-warning')
+  require('./dependency-depth-warning'),
+  require('./component-attestation')
 ];
 
 function runAll(sbom, options = {}) {
