@@ -102,7 +102,9 @@ const checks = [
   require('./dependency-depth-warning'),
   require('./component-attestation'),
   require('./component-update-url'),
-  require('./spdx-creation-info')
+  require('./spdx-creation-info'),
+  require('./component-alternative'),
+  require('./spdx-extracted-license')
 ];
 
 function runAll(sbom, options = {}) {
