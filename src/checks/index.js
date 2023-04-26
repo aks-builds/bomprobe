@@ -93,7 +93,8 @@ const checks = [
   require('./spdx-annotation-info'),
   require('./component-vcs-ref'),
   require('./metadata-bom-version'),
-  require('./component-classifier')
+  require('./component-classifier'),
+  require('./dependency-license-tree')
 ];
 
 function runAll(sbom, options = {}) {
