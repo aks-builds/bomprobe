@@ -94,7 +94,9 @@ const checks = [
   require('./component-vcs-ref'),
   require('./metadata-bom-version'),
   require('./component-classifier'),
-  require('./dependency-license-tree')
+  require('./dependency-license-tree'),
+  require('./component-encoding'),
+  require('./metadata-timestamp-format')
 ];
 
 function runAll(sbom, options = {}) {
