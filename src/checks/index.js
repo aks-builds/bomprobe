@@ -88,7 +88,9 @@ const checks = [
   require('./spdx-file-info'),
   require('./component-reproducible'),
   require('./metadata-serial-format'),
-  require('./component-platform')
+  require('./component-platform'),
+  require('./component-deprecated-license'),
+  require('./spdx-annotation-info')
 ];
 
 function runAll(sbom, options = {}) {
