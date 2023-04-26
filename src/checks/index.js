@@ -100,7 +100,9 @@ const checks = [
   require('./spdx-relationship-types'),
   require('./component-trust-boundary'),
   require('./dependency-depth-warning'),
-  require('./component-attestation')
+  require('./component-attestation'),
+  require('./component-update-url'),
+  require('./spdx-creation-info')
 ];
 
 function runAll(sbom, options = {}) {
