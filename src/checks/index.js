@@ -92,7 +92,8 @@ const checks = [
   require('./component-deprecated-license'),
   require('./spdx-annotation-info'),
   require('./component-vcs-ref'),
-  require('./metadata-bom-version')
+  require('./metadata-bom-version'),
+  require('./component-classifier')
 ];
 
 function runAll(sbom, options = {}) {
