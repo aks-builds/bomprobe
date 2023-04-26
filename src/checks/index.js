@@ -87,7 +87,8 @@ const checks = [
   require('./dependency-orphan'),
   require('./spdx-file-info'),
   require('./component-reproducible'),
-  require('./metadata-serial-format')
+  require('./metadata-serial-format'),
+  require('./component-platform')
 ];
 
 function runAll(sbom, options = {}) {
