@@ -120,7 +120,8 @@ const checks = [
   require('./component-ecosystem'),
   require('./component-integrity'),
   require('./component-dependency-license'),
-  require('./spdx-license-reference')
+  require('./spdx-license-reference'),
+  require('./component-ownership')
 ];
 
 function runAll(sbom, options = {}) {
