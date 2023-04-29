@@ -119,7 +119,8 @@ const checks = [
   require('./spdx-relationship-direction'),
   require('./component-ecosystem'),
   require('./component-integrity'),
-  require('./component-dependency-license')
+  require('./component-dependency-license'),
+  require('./spdx-license-reference')
 ];
 
 function runAll(sbom, options = {}) {
