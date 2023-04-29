@@ -111,7 +111,9 @@ const checks = [
   require('./component-distribution'),
   require('./spdx-package-download'),
   require('./component-build-reproducible'),
-  require('./component-license-url')
+  require('./component-license-url'),
+  require('./component-supplier-contact'),
+  require('./spdx-package-originator')
 ];
 
 function runAll(sbom, options = {}) {
