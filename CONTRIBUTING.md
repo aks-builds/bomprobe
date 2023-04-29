@@ -16,10 +16,13 @@ No build step, no dependencies to install. Just Node.js 18+.
 
 ```
 src/
-  checks/       - Individual SBOM quality checks (69 and counting)
+  checks/       - Individual SBOM quality checks (129 and counting)
   checks/index.js - Check registry and runner
   parsers/      - CycloneDX and SPDX parsers with normalization
-  formatters/   - Output formatters (text, json, sarif, html, csv, junit, markdown)
+  formatters/   - Output formatters (text, json, sarif, html, csv, junit, markdown, gitlab, github)
+  cli/          - Config, presets, batch scanning, env config
+  output/       - Extended output: trend, diff, badges, CI reports
+  policy/       - Custom rule engine for policy-as-code
   scoring/      - Score calculation, grading, and weighted breakdown
   compliance/   - NTIA, BSI, and EU CRA compliance profile evaluation
   utils/        - Shared utilities (search, diff, fingerprint, policy, etc.)
@@ -41,7 +44,7 @@ module.exports = {
   id: 'my-check',
   name: 'My Check',
   description: 'What this check looks for',
-  weight: 0.5,
+  weight: 0.2,
   run(sbom) {
     const findings = [];
     // inspect normalized sbom, push findings
@@ -55,7 +58,7 @@ documents are normalized before checks run, so your check can use `sbom.componen
 `sbom.metadata`, and `sbom.dependencies` regardless of the source format.
 
 Each finding should have `{ severity, component?, message }` where severity
-is `error`, `warning`, or `info`. Weight between 0.1 (informational) and 1.0 (critical).
+is `error`, `warning`, or `info`. Weight between 0.1 (low) and 0.3 (high impact).
 
 After writing the check, register it in `src/checks/index.js` and add a
 matching test file in `test/checks/`.
