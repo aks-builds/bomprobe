@@ -110,7 +110,8 @@ const checks = [
   require('./metadata-bom-ref'),
   require('./component-distribution'),
   require('./spdx-package-download'),
-  require('./component-build-reproducible')
+  require('./component-build-reproducible'),
+  require('./component-license-url')
 ];
 
 function runAll(sbom, options = {}) {
