@@ -1,0 +1,7 @@
+{
+  "format": "json",
+  "threshold": 70,
+  "failOn": "error",
+  "quiet": false,
+  "exclude": ["component-description", "component-copyright"]
+}

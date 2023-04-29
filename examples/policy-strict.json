@@ -1,0 +1,52 @@
+{
+  "name": "strict-supply-chain",
+  "description": "Strict supply chain policy requiring purl, supplier, license, and hash on every component",
+  "rules": [
+    {
+      "id": "must-have-purl",
+      "field": "purl",
+      "operator": "exists",
+      "severity": "error",
+      "message": "Every component must have a Package URL for precise identification"
+    },
+    {
+      "id": "must-have-supplier",
+      "field": "supplier.name",
+      "operator": "exists",
+      "severity": "error",
+      "message": "Every component must declare its supplier"
+    },
+    {
+      "id": "must-have-license",
+      "field": "licenses",
+      "operator": "min_length",
+      "value": 1,
+      "severity": "error",
+      "message": "Every component must have at least one license declared"
+    },
+    {
+      "id": "must-be-library-or-framework",
+      "field": "type",
+      "operator": "in",
+      "value": ["library", "framework", "application"],
+      "severity": "warning",
+      "message": "Component type should be library, framework, or application"
+    },
+    {
+      "id": "version-must-be-semver",
+      "field": "version",
+      "operator": "matches",
+      "value": "^\\d+\\.\\d+",
+      "severity": "warning",
+      "message": "Component version should follow semver format"
+    },
+    {
+      "id": "metadata-must-have-timestamp",
+      "field": "timestamp",
+      "operator": "exists",
+      "target": "metadata",
+      "severity": "error",
+      "message": "SBOM metadata must include a generation timestamp"
+    }
+  ]
+}
