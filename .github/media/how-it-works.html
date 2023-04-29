@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How bomprobe Works</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: #f8fafc;
+    color: #1e293b;
+    padding: 48px 56px;
+    width: 1440px;
+    min-height: 900px;
+  }
+
+  h1 {
+    font-size: 36px;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+
+  .subtitle {
+    font-size: 15px;
+    color: #64748b;
+    margin-bottom: 44px;
+    max-width: 700px;
+    line-height: 1.5;
+  }
+
+  /* Main pipeline - horizontal top bar */
+  .pipeline {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 40px;
+    position: relative;
+  }
+
+  .stage {
+    flex: 1;
+    position: relative;
+  }
+
+  .stage-box {
+    background: white;
+    border-radius: 12px;
+    padding: 18px 20px;
+    border: 2px solid #e2e8f0;
+    position: relative;
+    z-index: 2;
+    transition: all 0.2s;
+  }
+
+  .stage-ingest .stage-box { border-color: #3b82f6; background: #eff6ff; }
+  .stage-normalize .stage-box { border-color: #8b5cf6; background: #f5f3ff; }
+  .stage-analyze .stage-box { border-color: #f59e0b; background: #fffbeb; }
+  .stage-score .stage-box { border-color: #10b981; background: #ecfdf5; }
+  .stage-report .stage-box { border-color: #06b6d4; background: #ecfeff; }
+
+  .stage-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 13px;
+    color: white;
+    margin-bottom: 8px;
+  }
+
+  .stage-ingest .stage-num { background: #3b82f6; }
+  .stage-normalize .stage-num { background: #8b5cf6; }
+  .stage-analyze .stage-num { background: #f59e0b; }
+  .stage-score .stage-num { background: #10b981; }
+  .stage-report .stage-num { background: #06b6d4; }
+
+  .stage-title {
+    font-weight: 700;
+    font-size: 16px;
+    color: #0f172a;
+    margin-bottom: 4px;
+  }
+
+  .stage-desc {
+    font-size: 12.5px;
+    color: #64748b;
+    line-height: 1.4;
+  }
+
+  /* Arrows between stages */
+  .arrow-gap {
+    width: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .arrow-gap svg {
+    width: 32px;
+    height: 32px;
+    color: #94a3b8;
+  }
+
+  /* Detail sections below the pipeline */
+  .details {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+    margin-top: 8px;
+  }
+
+  .detail-section {
+    background: white;
+    border-radius: 14px;
+    padding: 24px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+
+  .detail-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #f1f5f9;
+  }
+
+  .detail-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+
+  .detail-title {
+    font-weight: 700;
+    font-size: 15px;
+    color: #0f172a;
+  }
+
+  .detail-subtitle {
+    font-size: 12px;
+    color: #94a3b8;
+    font-weight: 500;
+  }
+
+  /* Check categories - pill style */
+  .check-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .check-pill {
+    padding: 5px 11px;
+    border-radius: 20px;
+    font-size: 11.5px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .check-pill .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+
+  .cat-component .dot { background: #3b82f6; }
+  .cat-component { background: #eff6ff; color: #1d4ed8; }
+  .cat-metadata .dot { background: #8b5cf6; }
+  .cat-metadata { background: #f5f3ff; color: #6d28d9; }
+  .cat-dependency .dot { background: #f59e0b; }
+  .cat-dependency { background: #fffbeb; color: #b45309; }
+  .cat-spdx .dot { background: #ef4444; }
+  .cat-spdx { background: #fef2f2; color: #dc2626; }
+  .cat-license .dot { background: #10b981; }
+  .cat-license { background: #ecfdf5; color: #047857; }
+
+  /* Compliance profiles */
+  .profile-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .profile-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+  }
+
+  .profile-badge {
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+
+  .profile-card:nth-child(1) .profile-badge { background: #dbeafe; color: #1d4ed8; }
+  .profile-card:nth-child(2) .profile-badge { background: #fce7f3; color: #be185d; }
+  .profile-card:nth-child(3) .profile-badge { background: #d1fae5; color: #047857; }
+
+  .profile-text {
+    font-size: 12px;
+    color: #475569;
+    line-height: 1.4;
+  }
+
+  /* Output formats - icon grid */
+  .output-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+
+  .output-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    font-size: 12px;
+    color: #334155;
+    font-weight: 500;
+  }
+
+  .output-item .fmt-icon {
+    font-size: 14px;
+    width: 20px;
+    text-align: center;
+  }
+
+  /* Scoring section */
+  .score-visual {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 4px;
+  }
+
+  .grade-bar {
+    display: flex;
+    gap: 4px;
+    flex: 1;
+  }
+
+  .grade-segment {
+    flex: 1;
+    height: 32px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 13px;
+    color: white;
+  }
+
+  /* Bottom banner */
+  .bottom-bar {
+    margin-top: 28px;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 14px;
+    padding: 20px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: white;
+  }
+
+  .bottom-bar .stat {
+    text-align: center;
+  }
+
+  .bottom-bar .stat-value {
+    font-size: 28px;
+    font-weight: 800;
+    color: #38bdf8;
+  }
+
+  .bottom-bar .stat-label {
+    font-size: 12px;
+    color: #94a3b8;
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .bottom-bar .divider {
+    width: 1px;
+    height: 48px;
+    background: #334155;
+  }
+
+  .bottom-tagline {
+    font-size: 14px;
+    color: #cbd5e1;
+    max-width: 340px;
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+
+<h1>How bomprobe Works</h1>
+<p class="subtitle">Feed it any SBOM. It parses the format, runs 126 quality checks, scores the result, checks compliance, and outputs in the format your CI pipeline needs.</p>
+
+<!-- Main pipeline -->
+<div class="pipeline">
+  <div class="stage stage-ingest">
+    <div class="stage-box">
+      <div class="stage-num">1</div>
+      <div class="stage-title">Ingest</div>
+      <div class="stage-desc">Auto-detect CycloneDX or SPDX. Parse JSON, validate structure, extract components.</div>
+    </div>
+  </div>
+
+  <div class="arrow-gap">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+  </div>
+
+  <div class="stage stage-normalize">
+    <div class="stage-box">
+      <div class="stage-num">2</div>
+      <div class="stage-title">Normalize</div>
+      <div class="stage-desc">SPDX docs are mapped to a common internal model. Both formats get the same checks.</div>
+    </div>
+  </div>
+
+  <div class="arrow-gap">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+  </div>
+
+  <div class="stage stage-analyze">
+    <div class="stage-box">
+      <div class="stage-num">3</div>
+      <div class="stage-title">Analyze</div>
+      <div class="stage-desc">Run 126 weighted checks across five categories. Each produces typed findings.</div>
+    </div>
+  </div>
+
+  <div class="arrow-gap">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+  </div>
+
+  <div class="stage stage-score">
+    <div class="stage-box">
+      <div class="stage-num">4</div>
+      <div class="stage-title">Score</div>
+      <div class="stage-desc">Weighted 0-100 score with A-F grading. Threshold gates for CI pass/fail.</div>
+    </div>
+  </div>
+
+  <div class="arrow-gap">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+  </div>
+
+  <div class="stage stage-report">
+    <div class="stage-box">
+      <div class="stage-num">5</div>
+      <div class="stage-title">Report</div>
+      <div class="stage-desc">16 output formats. Terminal, CI annotations, SARIF, HTML, JUnit, and more.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Detail sections -->
+<div class="details">
+  <!-- Left: Check categories -->
+  <div class="detail-section">
+    <div class="detail-header">
+      <div class="detail-icon" style="background: #eff6ff;">&#128270;</div>
+      <div>
+        <div class="detail-title">126 Quality Checks</div>
+        <div class="detail-subtitle">Five categories, weighted by supply chain impact</div>
+      </div>
+    </div>
+    <div class="check-grid">
+      <span class="check-pill cat-component"><span class="dot"></span>Name</span>
+      <span class="check-pill cat-component"><span class="dot"></span>Version</span>
+      <span class="check-pill cat-component"><span class="dot"></span>PURL</span>
+      <span class="check-pill cat-component"><span class="dot"></span>Supplier</span>
+      <span class="check-pill cat-component"><span class="dot"></span>Hash</span>
+      <span class="check-pill cat-component"><span class="dot"></span>License</span>
+      <span class="check-pill cat-component"><span class="dot"></span>Type</span>
+      <span class="check-pill cat-component"><span class="dot"></span>Scope</span>
+      <span class="check-pill cat-component"><span class="dot"></span>CPE</span>
+      <span class="check-pill cat-component"><span class="dot"></span>Integrity</span>
+      <span class="check-pill cat-component"><span class="dot"></span>Ownership</span>
+      <span class="check-pill cat-component"><span class="dot"></span>Ecosystem</span>
+      <span class="check-pill cat-metadata"><span class="dot"></span>Timestamp</span>
+      <span class="check-pill cat-metadata"><span class="dot"></span>Tools</span>
+      <span class="check-pill cat-metadata"><span class="dot"></span>Author</span>
+      <span class="check-pill cat-metadata"><span class="dot"></span>BOM ID</span>
+      <span class="check-pill cat-metadata"><span class="dot"></span>Lifecycle</span>
+      <span class="check-pill cat-dependency"><span class="dot"></span>Coverage</span>
+      <span class="check-pill cat-dependency"><span class="dot"></span>Depth</span>
+      <span class="check-pill cat-dependency"><span class="dot"></span>Orphans</span>
+      <span class="check-pill cat-dependency"><span class="dot"></span>Cycles</span>
+      <span class="check-pill cat-spdx"><span class="dot"></span>Namespace</span>
+      <span class="check-pill cat-spdx"><span class="dot"></span>Relationships</span>
+      <span class="check-pill cat-spdx"><span class="dot"></span>Creator</span>
+      <span class="check-pill cat-spdx"><span class="dot"></span>Verification</span>
+      <span class="check-pill cat-license"><span class="dot"></span>SPDX Expr</span>
+      <span class="check-pill cat-license"><span class="dot"></span>Copyleft</span>
+      <span class="check-pill cat-license"><span class="dot"></span>Deprecated</span>
+    </div>
+  </div>
+
+  <!-- Center: Compliance -->
+  <div class="detail-section">
+    <div class="detail-header">
+      <div class="detail-icon" style="background: #fce7f3;">&#9989;</div>
+      <div>
+        <div class="detail-title">Compliance Profiles</div>
+        <div class="detail-subtitle">Regulatory frameworks with specific field requirements</div>
+      </div>
+    </div>
+    <div class="profile-cards">
+      <div class="profile-card">
+        <span class="profile-badge">NTIA</span>
+        <span class="profile-text">U.S. minimum elements: supplier, name, version, identifier, relationships, author, timestamp</span>
+      </div>
+      <div class="profile-card">
+        <span class="profile-badge">BSI TR-03183</span>
+        <span class="profile-text">German federal guideline: hashes, supplier URLs, license info, component relationships</span>
+      </div>
+      <div class="profile-card">
+        <span class="profile-badge">EU CRA</span>
+        <span class="profile-text">Cyber Resilience Act: vulnerability contacts, update info, complete dependency trees</span>
+      </div>
+    </div>
+
+    <!-- Scoring visual -->
+    <div style="margin-top: 20px; padding-top: 16px; border-top: 2px solid #f1f5f9;">
+      <div style="font-weight: 700; font-size: 14px; margin-bottom: 10px; color: #0f172a;">Scoring Engine</div>
+      <div class="grade-bar">
+        <div class="grade-segment" style="background: #ef4444;">F</div>
+        <div class="grade-segment" style="background: #f97316;">D</div>
+        <div class="grade-segment" style="background: #eab308;">C</div>
+        <div class="grade-segment" style="background: #22c55e;">B</div>
+        <div class="grade-segment" style="background: #059669;">A</div>
+      </div>
+      <div style="font-size: 11px; color: #94a3b8; margin-top: 6px;">Weighted score 0-100 with configurable thresholds and fail-on severity</div>
+    </div>
+  </div>
+
+  <!-- Right: Output formats -->
+  <div class="detail-section">
+    <div class="detail-header">
+      <div class="detail-icon" style="background: #ecfeff;">&#128196;</div>
+      <div>
+        <div class="detail-title">16 Output Formats</div>
+        <div class="detail-subtitle">From terminal to CI pipeline to standalone report</div>
+      </div>
+    </div>
+    <div class="output-grid">
+      <div class="output-item"><span class="fmt-icon">$</span>Text</div>
+      <div class="output-item"><span class="fmt-icon">{}</span>JSON</div>
+      <div class="output-item"><span class="fmt-icon">#</span>Markdown</div>
+      <div class="output-item"><span class="fmt-icon">,</span>CSV</div>
+      <div class="output-item" style="border-color: #3b82f6;"><span class="fmt-icon" style="color: #3b82f6;">S</span>SARIF</div>
+      <div class="output-item"><span class="fmt-icon">&lt;&gt;</span>HTML</div>
+      <div class="output-item" style="border-color: #f59e0b;"><span class="fmt-icon" style="color: #f59e0b;">J</span>JUnit</div>
+      <div class="output-item"><span class="fmt-icon">&#9733;</span>Badge</div>
+      <div class="output-item" style="border-color: #ef4444;"><span class="fmt-icon" style="color: #ef4444;">&#9679;</span>GitLab CQ</div>
+      <div class="output-item" style="border-color: #0f172a;"><span class="fmt-icon">&#9888;</span>GitHub</div>
+      <div class="output-item"><span class="fmt-icon">&#8595;</span>Trend</div>
+      <div class="output-item"><span class="fmt-icon">&#916;</span>Diff</div>
+    </div>
+
+    <!-- CI examples -->
+    <div style="margin-top: 16px; padding-top: 14px; border-top: 2px solid #f1f5f9;">
+      <div style="font-weight: 700; font-size: 14px; margin-bottom: 10px; color: #0f172a;">CI Integration</div>
+      <div style="background: #0f172a; border-radius: 8px; padding: 12px 14px; font-family: 'Courier New', monospace; font-size: 11.5px; color: #38bdf8; line-height: 1.6;">
+        <span style="color: #94a3b8;">$</span> npx bomprobe sbom.json --threshold 70<br>
+        <span style="color: #94a3b8;">$</span> npx bomprobe sbom.json --format sarif<br>
+        <span style="color: #94a3b8;">$</span> npx bomprobe sbom.json --profile ntia
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bottom stats bar -->
+<div class="bottom-bar">
+  <div class="stat">
+    <div class="stat-value">126</div>
+    <div class="stat-label">Quality Checks</div>
+  </div>
+  <div class="divider"></div>
+  <div class="stat">
+    <div class="stat-value">3</div>
+    <div class="stat-label">Compliance Profiles</div>
+  </div>
+  <div class="divider"></div>
+  <div class="stat">
+    <div class="stat-value">16</div>
+    <div class="stat-label">Output Formats</div>
+  </div>
+  <div class="divider"></div>
+  <div class="stat">
+    <div class="stat-value">0</div>
+    <div class="stat-label">Dependencies</div>
+  </div>
+  <div class="divider"></div>
+  <div class="bottom-tagline">
+    Offline-first. No network calls. No telemetry.<br>
+    Your SBOM never leaves your machine.
+  </div>
+</div>
+
+</body>
+</html>
