@@ -114,7 +114,8 @@ const checks = [
   require('./component-license-url'),
   require('./component-supplier-contact'),
   require('./spdx-package-originator'),
-  require('./dependency-version-conflict')
+  require('./dependency-version-conflict'),
+  require('./metadata-completeness-score')
 ];
 
 function runAll(sbom, options = {}) {
