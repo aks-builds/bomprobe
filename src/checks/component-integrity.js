@@ -8,7 +8,7 @@ module.exports = {
     const weak = new Set(['MD5', 'SHA-1']);
 
     for (const c of (sbom.components || [])) {
-      if (!c.hashes || c.hashes.length === 0) continue;
+      if (!Array.isArray(c.hashes) || c.hashes.length === 0) continue;
 
       const algos = c.hashes.map(h => h.alg);
       const hasStrong = algos.some(a => !weak.has(a));

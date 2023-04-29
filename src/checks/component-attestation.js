@@ -9,7 +9,7 @@ module.exports = {
       if (c.type === 'data' || c.type === 'file') continue;
 
       const hasEvidence = c.evidence?.identity?.length > 0 || c.evidence?.occurrences?.length > 0;
-      const hasSignature = c.signature || c.hashes?.some(h => h.alg?.startsWith('SHA'));
+      const hasSignature = c.signature || (Array.isArray(c.hashes) && c.hashes.some(h => h.alg?.startsWith('SHA')));
       const hasPedigree = c.pedigree?.ancestors?.length > 0 || c.pedigree?.commits?.length > 0;
 
       if (!hasEvidence && !hasSignature && !hasPedigree) {
