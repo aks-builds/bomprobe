@@ -1,6 +1,6 @@
 {
   "name": "bomprobe",
-  "version": "0.4.0",
+  "version": "1.0.0",
   "description": "SBOM quality auditor for CycloneDX and SPDX",
   "main": "src/index.js",
   "bin": {
@@ -9,6 +9,12 @@
   "scripts": {
     "test": "node --test test/**/*.test.js"
   },
+  "files": [
+    "bin/",
+    "src/",
+    "README.md",
+    "LICENSE"
+  ],
   "keywords": [
     "sbom",
     "cyclonedx",
@@ -19,7 +25,14 @@
     "security",
     "audit",
     "ntia",
-    "compliance"
+    "compliance",
+    "quality",
+    "scanner",
+    "ci",
+    "devsecops",
+    "eu-cra",
+    "bsi",
+    "openssf"
   ],
   "author": "Aditya Kumar Singh",
   "license": "MIT",
