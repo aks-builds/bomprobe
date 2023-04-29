@@ -122,7 +122,8 @@ const checks = [
   require('./component-dependency-license'),
   require('./spdx-license-reference'),
   require('./component-ownership'),
-  require('./spdx-package-supplier')
+  require('./spdx-package-supplier'),
+  require('./component-version-range')
 ];
 
 function runAll(sbom, options = {}) {
