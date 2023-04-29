@@ -113,7 +113,8 @@ const checks = [
   require('./component-build-reproducible'),
   require('./component-license-url'),
   require('./component-supplier-contact'),
-  require('./spdx-package-originator')
+  require('./spdx-package-originator'),
+  require('./dependency-version-conflict')
 ];
 
 function runAll(sbom, options = {}) {
