@@ -124,7 +124,10 @@ const checks = [
   require('./component-ownership'),
   require('./spdx-package-supplier'),
   require('./component-version-range'),
-  require('./metadata-bom-identifier')
+  require('./metadata-bom-identifier'),
+  require('./componentAge'),
+  require('./componentDuplicate'),
+  require('./componentExternalRefQuality')
 ];
 
 function runAll(sbom, options = {}) {
