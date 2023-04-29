@@ -20,8 +20,11 @@ jobs:
       - run: npm test
 
   smoke:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     needs: test
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -29,7 +32,12 @@ jobs:
           node-version: 20
       - name: CLI smoke test
         run: |
-          echo '{"bomFormat":"CycloneDX","specVersion":"1.4","components":[{"name":"test","version":"1.0.0","type":"library"}]}' > /tmp/sbom.json
-          node bin/bomprobe.js /tmp/sbom.json --format json
-          node bin/bomprobe.js /tmp/sbom.json --format text
-          node bin/bomprobe.js /tmp/sbom.json --format markdown
+          echo '{"bomFormat":"CycloneDX","specVersion":"1.4","components":[{"name":"test","version":"1.0.0","type":"library"}]}' > sbom-test.json
+          node bin/bomprobe.js sbom-test.json --format json
+          node bin/bomprobe.js sbom-test.json --format text
+          node bin/bomprobe.js sbom-test.json --format markdown
+      - name: Self-audit
+        run: |
+          echo '{"bomFormat":"CycloneDX","specVersion":"1.5","metadata":{"timestamp":"2023-04-30T00:00:00Z","tools":[{"name":"bomprobe","version":"1.0.0"}]},"components":[{"name":"bomprobe","version":"1.0.0","type":"application","purl":"pkg:npm/bomprobe@1.0.0"}],"dependencies":[]}' > self-sbom.json
+          node bin/bomprobe.js self-sbom.json --format text
+          node bin/bomprobe.js self-sbom.json --profile ntia
