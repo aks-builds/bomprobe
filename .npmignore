@@ -1,0 +1,7 @@
+test/
+.github/
+.gitignore
+.bomproberc*
+*.test.js
+coverage/
+.claude/
