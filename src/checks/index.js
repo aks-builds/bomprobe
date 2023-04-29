@@ -127,7 +127,10 @@ const checks = [
   require('./metadata-bom-identifier'),
   require('./componentAge'),
   require('./componentDuplicate'),
-  require('./componentExternalRefQuality')
+  require('./componentExternalRefQuality'),
+  require('./metadataLifecyclePhase'),
+  require('./dependencyTransitiveDepth'),
+  require('./componentPurlConsistency')
 ];
 
 function runAll(sbom, options = {}) {
