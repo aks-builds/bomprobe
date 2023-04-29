@@ -109,7 +109,8 @@ const checks = [
   require('./dependency-scope-mismatch'),
   require('./metadata-bom-ref'),
   require('./component-distribution'),
-  require('./spdx-package-download')
+  require('./spdx-package-download'),
+  require('./component-build-reproducible')
 ];
 
 function runAll(sbom, options = {}) {
