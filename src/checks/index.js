@@ -118,7 +118,8 @@ const checks = [
   require('./metadata-completeness-score'),
   require('./spdx-relationship-direction'),
   require('./component-ecosystem'),
-  require('./component-integrity')
+  require('./component-integrity'),
+  require('./component-dependency-license')
 ];
 
 function runAll(sbom, options = {}) {
