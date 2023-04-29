@@ -117,7 +117,8 @@ const checks = [
   require('./dependency-version-conflict'),
   require('./metadata-completeness-score'),
   require('./spdx-relationship-direction'),
-  require('./component-ecosystem')
+  require('./component-ecosystem'),
+  require('./component-integrity')
 ];
 
 function runAll(sbom, options = {}) {
