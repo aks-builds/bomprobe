@@ -19,6 +19,8 @@ on a 0-100 scale and tells you exactly what to fix.
 
 ---
 
+[![How bomprobe works: ingest SBOM, normalize format, run 126 quality checks, score with A-F grading, report in 16 output formats](/.github/media/how-it-works.png)](/.github/media/how-it-works.png)
+
 ## Why bomprobe
 
 SBOM generators produce output. bomprobe tells you if that output is any good.
@@ -30,44 +32,6 @@ catches what your generator missed before it reaches production.
 
 It runs entirely offline, has zero npm dependencies, and works as a CLI, CI quality gate,
 or Node.js library.
-
-## How it works
-
-```
-                    ┌─────────────────┐
-                    │   SBOM file     │
-                    │  (.json/.xml)   │
-                    └────────┬────────┘
-                             │
-                    ┌────────▼────────┐
-                    │   Parse + Detect│
-                    │  CycloneDX/SPDX │
-                    └────────┬────────┘
-                             │
-              ┌──────────────┼──────────────┐
-              │              │              │
-     ┌────────▼──────┐ ┌────▼─────┐ ┌──────▼───────┐
-     │  126 Quality  │ │ Scoring  │ │  Compliance  │
-     │   Checks      │ │  Engine  │ │   Profiles   │
-     │               │ │          │ │              │
-     │ - Components  │ │ Weighted │ │ - NTIA       │
-     │ - Metadata    │ │ A-F grade│ │ - BSI TR-03  │
-     │ - Dependencies│ │ 0-100    │ │ - EU CRA     │
-     │ - SPDX fields │ │          │ │              │
-     │ - Licenses    │ │          │ │              │
-     └────────┬──────┘ └────┬─────┘ └──────┬───────┘
-              │              │              │
-              └──────────────┼──────────────┘
-                             │
-                    ┌────────▼────────┐
-                    │  Output Format  │
-                    │                 │
-                    │ text, json, md  │
-                    │ csv, sarif, html│
-                    │ junit, gitlab   │
-                    │ github, badges  │
-                    └─────────────────┘
-```
 
 ## Install
 
