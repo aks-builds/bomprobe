@@ -4,13 +4,14 @@
 
 **Know your SBOM before your auditor does.**
 
-126 quality checks across CycloneDX and SPDX, three compliance profiles,
+140 quality checks across CycloneDX and SPDX, three compliance profiles,
 16 output formats, zero dependencies. Scores your software bill of materials
 on a 0-100 scale and tells you exactly what to fix.
 
 [![CI](https://github.com/aks-builds/bomprobe/actions/workflows/ci.yml/badge.svg)](https://github.com/aks-builds/bomprobe/actions/workflows/ci.yml)
 [![npm version](https://img.shields.io/npm/v/bomprobe.svg)](https://www.npmjs.com/package/bomprobe)
-[![Checks: 126](https://img.shields.io/badge/checks-126-brightgreen)](#checks)
+[![PyPI version](https://img.shields.io/pypi/v/bomprobe.svg)](https://pypi.org/project/bomprobe/)
+[![Checks: 140](https://img.shields.io/badge/checks-140-brightgreen)](#checks)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18-green.svg)](https://nodejs.org)
 [![Zero Dependencies](https://img.shields.io/badge/dependencies-0-blue.svg)](#)
@@ -19,7 +20,7 @@ on a 0-100 scale and tells you exactly what to fix.
 
 ---
 
-[![How bomprobe works: ingest SBOM, normalize format, run 126 quality checks, score with A-F grading, report in 16 output formats](/.github/media/how-it-works.png)](/.github/media/how-it-works.png)
+[![How bomprobe works: ingest SBOM, normalize format, run 140 quality checks, score with A-F grading, report in 16 output formats](/.github/media/how-it-works.png)](/.github/media/how-it-works.png)
 
 ## Why bomprobe
 
