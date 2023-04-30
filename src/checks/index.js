@@ -133,20 +133,40 @@ const checks = [
   require('./componentPurlConsistency')
 ];
 
+function sanitize(sbom) {
+  if (!sbom || typeof sbom !== 'object') return { components: [], dependencies: [], metadata: {} };
+  const s = { ...sbom };
+  if (!Array.isArray(s.components)) s.components = [];
+  if (!Array.isArray(s.dependencies)) s.dependencies = [];
+  if (!s.metadata || typeof s.metadata !== 'object') s.metadata = {};
+  s.components = s.components.filter(c => c && typeof c === 'object' && !Array.isArray(c));
+  return s;
+}
+
 function runAll(sbom, options = {}) {
+  const safe = sanitize(sbom);
   const exclude = options.exclude || [];
   const only = options.only || null;
   const results = [];
   for (const check of checks) {
     if (exclude.includes(check.id)) continue;
     if (only && !only.includes(check.id)) continue;
-    const findings = check.run(sbom);
-    results.push({
-      id: check.id,
-      name: check.name,
-      weight: check.weight,
-      findings
-    });
+    try {
+      const findings = check.run(safe);
+      results.push({
+        id: check.id,
+        name: check.name,
+        weight: check.weight,
+        findings: Array.isArray(findings) ? findings : []
+      });
+    } catch {
+      results.push({
+        id: check.id,
+        name: check.name,
+        weight: check.weight,
+        findings: [{ severity: 'error', message: `Check ${check.id} failed on this SBOM` }]
+      });
+    }
   }
   return results;
 }
