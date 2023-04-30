@@ -1,0 +1,42 @@
+# Example: Add bomprobe to your CI pipeline
+# Copy this into .github/workflows/sbom-audit.yml
+
+name: SBOM Audit
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Generate your SBOM (use your preferred tool)
+      - name: Generate SBOM
+        run: npx @cyclonedx/cyclonedx-npm --output-file sbom.json
+
+      # Audit it with bomprobe
+      - name: Audit SBOM
+        uses: aks-builds/bomprobe@v1
+        id: audit
+        with:
+          sbom: sbom.json
+          format: text
+          profile: ntia
+          threshold: 70
+          fail-on: error
+
+      # Use the outputs
+      - name: Check results
+        run: |
+          echo "Score: ${{ steps.audit.outputs.score }}"
+          echo "Grade: ${{ steps.audit.outputs.grade }}"
+          echo "Findings: ${{ steps.audit.outputs.findings }}"
+          echo "NTIA Compliant: ${{ steps.audit.outputs.compliant }}"

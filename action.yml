@@ -1,0 +1,108 @@
+name: 'bomprobe'
+description: 'SBOM quality auditor - 140 checks for CycloneDX and SPDX'
+author: 'aks-builds'
+
+branding:
+  icon: 'shield'
+  color: 'blue'
+
+inputs:
+  sbom:
+    description: 'Path to the SBOM file (CycloneDX JSON or SPDX JSON)'
+    required: true
+  format:
+    description: 'Output format (text, json, markdown, csv, sarif, html, github-annotations, gitlab-code-quality, junit, badge, trend, diff)'
+    default: 'text'
+  profile:
+    description: 'Compliance profile (ntia, bsi, eu-cra)'
+    default: ''
+  threshold:
+    description: 'Minimum score (0-100). Fails if score is below this.'
+    default: ''
+  fail-on:
+    description: 'Fail on severity level (error, warning, info, none)'
+    default: 'error'
+  config:
+    description: 'Path to .bomproberc config file'
+    default: ''
+
+outputs:
+  score:
+    description: 'Overall SBOM quality score (0-100)'
+  grade:
+    description: 'Letter grade (A-F)'
+  findings:
+    description: 'Number of findings'
+  compliant:
+    description: 'Compliance result (true/false, only with profile)'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install bomprobe
+      shell: bash
+      run: npm install -g bomprobe
+
+    - name: Run bomprobe
+      id: bomprobe
+      shell: bash
+      env:
+        SBOM_PATH: ${{ inputs.sbom }}
+        FORMAT: ${{ inputs.format }}
+        PROFILE: ${{ inputs.profile }}
+        THRESHOLD: ${{ inputs.threshold }}
+        FAIL_ON: ${{ inputs.fail-on }}
+        CONFIG: ${{ inputs.config }}
+      run: |
+        ARGS="$SBOM_PATH --format json"
+        if [ -n "$PROFILE" ]; then ARGS="$ARGS --profile $PROFILE"; fi
+        if [ -n "$THRESHOLD" ]; then ARGS="$ARGS --threshold $THRESHOLD"; fi
+        if [ -n "$FAIL_ON" ]; then ARGS="$ARGS --fail-on $FAIL_ON"; fi
+        if [ -n "$CONFIG" ]; then ARGS="$ARGS --config $CONFIG"; fi
+
+        set +e
+        OUTPUT=$(bomprobe $ARGS 2>&1)
+        EXIT_CODE=$?
+        set -e
+
+        SCORE=$(echo "$OUTPUT" | node -e "
+          let d='';process.stdin.on('data',c=>d+=c);process.stdin.on('end',()=>{
+            try{const j=JSON.parse(d);console.log(j.score?.overall||0)}catch{console.log(0)}
+          })
+        ")
+        GRADE=$(echo "$OUTPUT" | node -e "
+          let d='';process.stdin.on('data',c=>d+=c);process.stdin.on('end',()=>{
+            try{const j=JSON.parse(d);console.log(j.score?.grade||'F')}catch{console.log('F')}
+          })
+        ")
+        FINDINGS=$(echo "$OUTPUT" | node -e "
+          let d='';process.stdin.on('data',c=>d+=c);process.stdin.on('end',()=>{
+            try{const j=JSON.parse(d);const t=j.checks?.reduce((s,c)=>s+c.findings.length,0)||0;console.log(t)}catch{console.log(0)}
+          })
+        ")
+        COMPLIANT=$(echo "$OUTPUT" | node -e "
+          let d='';process.stdin.on('data',c=>d+=c);process.stdin.on('end',()=>{
+            try{const j=JSON.parse(d);console.log(j.compliance?.compliant??'')}catch{console.log('')}
+          })
+        ")
+
+        echo "score=$SCORE" >> $GITHUB_OUTPUT
+        echo "grade=$GRADE" >> $GITHUB_OUTPUT
+        echo "findings=$FINDINGS" >> $GITHUB_OUTPUT
+        echo "compliant=$COMPLIANT" >> $GITHUB_OUTPUT
+
+        # Now run with the user's chosen format for display
+        if [ "$FORMAT" != "json" ]; then
+          DISPLAY_ARGS="$SBOM_PATH --format $FORMAT"
+          if [ -n "$PROFILE" ]; then DISPLAY_ARGS="$DISPLAY_ARGS --profile $PROFILE"; fi
+          bomprobe $DISPLAY_ARGS || true
+        else
+          echo "$OUTPUT"
+        fi
+
+        exit $EXIT_CODE
