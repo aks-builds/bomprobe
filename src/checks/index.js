@@ -130,12 +130,19 @@ const checks = [
   require('./componentExternalRefQuality'),
   require('./metadataLifecyclePhase'),
   require('./dependencyTransitiveDepth'),
-  require('./componentPurlConsistency')
+  require('./componentPurlConsistency'),
+  require('./componentSupplierVerified'),
+  require('./componentLicenseNotice'),
+  require('./componentPurlEcosystem'),
+  require('./componentHashMultiple'),
+  require('./dependencyPhantom'),
+  require('./componentNamespace'),
+  require('./metadataContactInfo')
 ];
 
 function sanitize(sbom) {
   if (!sbom || typeof sbom !== 'object') return { components: [], dependencies: [], metadata: {} };
-  const s = { ...sbom };
+  const s = Object.assign({}, sbom);
   if (!Array.isArray(s.components)) s.components = [];
   if (!Array.isArray(s.dependencies)) s.dependencies = [];
   if (!s.metadata || typeof s.metadata !== 'object') s.metadata = {};
