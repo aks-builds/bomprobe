@@ -113,7 +113,7 @@ Options:
 
 ## Checks
 
-bomprobe runs 126 checks organized into categories:
+bomprobe runs 140 checks organized into categories:
 
 **Component checks** - name, version, supplier, license, purl, cpe, hashes,
 type, scope, description, copyright, external refs, dependencies, group,
@@ -268,29 +268,69 @@ checks both work correctly.
 ```
 bomprobe/
   bin/bomprobe.js          CLI entry point
+  action.yml               Reusable GitHub Action
   src/
-    checks/                126 quality checks + registry
-    scoring/               Weighted scoring engine, grades, profiles
+    checks/                140 quality checks + registry
+    analysis/              Supply chain depth, component age, config validation
+    baseline/              Baseline snapshots and regression detection
+    convert/               SPDX-to-CycloneDX converter
+    diff/                  SBOM comparison engine
+    merge/                 Multi-SBOM merge (union/intersect)
+    policy/                Policy engine with presets
+    report/                SARIF, JUnit report builders
+    scoring/               Weighted scoring, completeness, grades
+    stats/                 Statistics and license risk analysis
+    tracking/              Quality trend tracking over time
+    vuln/                  Vulnerability correlation
     compliance/            NTIA, BSI TR-03183, EU CRA profiles
     output/                16 output formatters
     cli/                   Arg parsing, config, presets, help
     utils/                 BOM manipulation utilities
-  test/
-    checks/                Unit tests for each check
-    scoring/               Scoring engine tests
-    compliance/            Compliance profile tests
-    output/                Output formatter tests
-    cli/                   CLI module tests
-    integration/           End-to-end audit tests
-    fixtures/              Sample SBOM files
+  python/                  Python wrapper (PyPI: bomprobe)
+  examples/                CI integration examples
+  test/                    1900+ tests, mirrored structure
 ```
+
+## GitHub Action
+
+Use bomprobe in your CI pipeline with no setup:
+
+```yaml
+- uses: aks-builds/bomprobe@v1
+  id: audit
+  with:
+    sbom: sbom.json
+    profile: ntia
+    threshold: 70
+
+- run: echo "Score: ${{ steps.audit.outputs.score }}, Grade: ${{ steps.audit.outputs.grade }}"
+```
+
+See `examples/github-action-usage.yml` for a full workflow.
+
+## Python
+
+```bash
+pip install bomprobe
+bomprobe-py sbom.json
+```
+
+Or use as a library:
+
+```python
+from bomprobe import audit
+result = audit("sbom.json", profile="ntia")
+print(result["score"])
+```
+
+Requires Node.js 18+ installed (the Python wrapper calls the Node.js CLI).
 
 ## Development
 
 ```bash
 git clone https://github.com/aks-builds/bomprobe.git
 cd bomprobe
-npm test                   # 1357 tests, zero deps
+node --test                # 1900+ tests, zero deps
 node bin/bomprobe.js test/fixtures/realistic-webapp.json
 ```
 
@@ -298,12 +338,16 @@ No build step. No transpilation. Node.js 18+ with `node:test` and `node:assert`.
 
 ## Contributing
 
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the full guide. The short version:
+
 1. Fork the repo
 2. Create a feature branch (`git checkout -b feat/my-check`)
 3. Add your check in `src/checks/` with a matching test in `test/checks/`
 4. Register it in `src/checks/index.js`
-5. Run `npm test` and make sure all tests pass
+5. Make sure `node --test` passes with zero failures
 6. Open a PR
+
+Look for issues labelled **good first issue** if you're not sure where to start.
 
 ## License
 
