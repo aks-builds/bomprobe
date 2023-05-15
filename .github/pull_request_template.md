@@ -1,15 +1,18 @@
 ## What does this PR do?
 
+
 ## Type of change
 
-- [ ] New check
+- [ ] New quality check
+- [ ] New feature / module
 - [ ] Bug fix
-- [ ] New format support
 - [ ] Documentation
-- [ ] Other
+- [ ] Tests
+- [ ] Refactor (no behavior change)
 
 ## Checklist
 
-- [ ] Tests pass (`npm test`)
-- [ ] New checks include tests
+- [ ] `node --test` passes with zero failures
+- [ ] New code has matching tests
 - [ ] No external dependencies added
+- [ ] Commit message describes what changed and why
