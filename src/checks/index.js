@@ -33,7 +33,8 @@ const checks = [
   require('./metadata-spec-compliance'),
   require('./component-namespace'),
   require('./component-hash-completeness'),
-  require('./metadata-document-namespace')
+  require('./metadata-document-namespace'),
+  require('./license-compatibility')
 ];
 
 function runAll(sbom, options = {}) {
